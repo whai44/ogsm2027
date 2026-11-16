@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live 5x2 Interactive Word Cloud</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-1: #38bdf8;
+      --accent-2: #a855f7;
+      --accent-3: #34d399;
+      --accent-4: #fbbf24;
+      --accent-5: #f43f5e;
+      --header-height: 54px;
+      --col-header-height: 36px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden; /* Enforces strict 1-page fit on desktop */
+      height: 100vh;
+      width: 100vw;
+    }
+
+    body.mobile-mode-active {
+      overflow-y: auto;
+      height: auto;
+      min-height: 100vh;
+    }
+
+    /* ==========================================
+       TOP NAVIGATION BAR (DESKTOP)
+       ========================================== */
+    .top-bar {
+      height: var(--header-height);
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-3);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #7e22ce);
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.92;
+    }
+
+    .btn-danger {
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+
+    /* ==========================================
+       5 ROWS x 2 COLUMNS DASHBOARD LAYOUT
+       ========================================== */
+    .dashboard-container {
+      height: calc(100vh - var(--header-height));
+      display: flex;
+      flex-direction: column;
+      padding: 8px 16px 12px 16px;
+      gap: 8px;
+    }
+
+    /* Column Header Bar */
+    .grid-header {
+      height: var(--col-header-height);
+      display: grid;
+      grid-template-columns: 240px 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .col-title {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .col-title.col-a {
+      color: var(--accent-1);
+      border-bottom: 2px solid var(--accent-1);
+    }
+
+    .col-title.col-b {
+      color: var(--accent-2);
+      border-bottom: 2px solid var(--accent-2);
+    }
+
+    /* 5-Row Main Grid */
+    .grid-rows {
+      flex: 1;
+      display: grid;
+      grid-template-rows: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      min-height: 0;
+    }
+
+    .question-row {
+      display: grid;
+      grid-template-columns: 240px 1fr 1fr;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    /* Left Question Card */
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--accent-1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-row:nth-child(2) .question-card { border-left-color: var(--accent-2); }
+    .question-row:nth-child(3) .question-card { border-left-color: var(--accent-3); }
+    .question-row:nth-child(4) .question-card { border-left-color: var(--accent-4); }
+    .question-row:nth-child(5) .question-card { border-left-color: var(--accent-5); }
+
+    .q-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .q-text {
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Word Cloud Cells */
+    .cloud-cell {
+      background: rgba(30, 41, 59, 0.55);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      gap: 6px 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cloud-empty {
+      font-size: 0.75rem;
+      color: #475569;
+      font-style: italic;
+      user-select: none;
+    }
+
+    .word-item {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 3px;
+      font-weight: 700;
+      line-height: 1.1;
+      transition: transform 0.25s ease, font-size 0.25s ease;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: default;
+      white-space: nowrap;
+    }
+
+    .word-item:hover {
+      transform: scale(1.12);
+      z-index: 2;
+    }
+
+    .word-count {
+      font-size: 0.62em;
+      opacity: 0.7;
+      font-weight: 500;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.4); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* ==========================================
+       MOBILE PARTICIPANT VIEW
+       ========================================== */
+    .mobile-container {
+      display: none;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 20px 16px 60px 16px;
+    }
+
+    body.mobile-mode-active .top-bar,
+    body.mobile-mode-active .dashboard-container {
+      display: none;
+    }
+
+    body.mobile-mode-active .mobile-container {
+      display: block;
+    }
+
+    .mobile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .mobile-header h2 {
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mobile-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .mobile-q-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .mobile-q-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .mobile-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 440px) {
+      .mobile-inputs {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+      color: var(--text-main);
+      font-size: 0.9rem;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--accent-1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #0284c7, #7e22ce);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .toast {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid var(--accent-3);
+      color: var(--accent-3);
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================
+       MODALS (QR CODE & SETTINGS)
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      max-width: 580px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .qr-display {
+      text-align: center;
+      padding: 16px 0;
+    }
+
+    .qr-display img {
+      background: white;
+      padding: 14px;
+      border-radius: 12px;
+      width: 240px;
+      height: 240px;
+      margin-bottom: 12px;
+    }
+
+    .qr-url {
+      font-size: 0.8rem;
+      color: var(--accent-1);
+      word-break: break-all;
+      background: #0f172a;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+    }
+
+    .settings-group {
+      margin-bottom: 14px;
+    }
+
+    .settings-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .settings-group input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+      color: var(--text-main);
+      font-size: 0.85rem;
+    }
+
+    .settings-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       DESKTOP TOP BAR
+       ========================================== -->
+  <header class="top-bar">
+    <div class="brand">
+      <h1>Live 5x2 Word Cloud</h1>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span id="syncStatusText">Live Sync Ready</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" onclick="openQrModal()">📱 Show QR Code</button>
+      <button class="btn" onclick="toggleMobilePreview()">📲 Preview Mobile View</button>
+      <button class="btn" onclick="seedDemoData()">✨ Load Demo Words</button>
+      <button class="btn" onclick="openSettingsModal()">⚙️ Edit Questions / Setup</button>
+      <button class="btn btn-danger" onclick="clearAllWords()">🗑️ Reset</button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       DESKTOP 5x2 SINGLE-PAGE DASHBOARD
+       ========================================== -->
+  <main class="dashboard-container">
+    <div class="grid-header">
+      <div class="col-title" style="color: var(--text-muted);">5 Questions</div>
+      <div class="col-title col-a" id="headerColA">Answer Column 1</div>
+      <div class="col-title col-b" id="headerColB">Answer Column 2</div>
+    </div>
+
+    <div class="grid-rows" id="desktopGridRows">
+      <!-- Generated dynamically by JS -->
+    </div>
+  </main>
+
+  <!-- ==========================================
+       MOBILE PARTICIPANT SUBMISSION VIEW
+       ========================================== -->
+  <section class="mobile-container">
+    <div class="mobile-header">
+      <h2>Submit Your Words</h2>
+      <p>Enter 1–2 short words per answer box below and tap Submit.</p>
+      <button class="btn" id="backToDesktopBtn" style="margin-top:10px; display:none;" onclick="toggleMobilePreview()">
+        ⬅️ Back to Desktop Display
+      </button>
+    </div>
+
+    <form id="mobileForm" onsubmit="handleMobileSubmit(event)">
+      <div id="mobileQuestionsList"></div>
+      <button type="submit" class="submit-btn">🚀 Send to Live Word Cloud</button>
+      <div class="toast" id="submitToast">✅ Submitted! Watch the main screen!</div>
+    </form>
+  </section>
+
+  <!-- ==========================================
+       QR CODE MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>📱 Scan to Participate</h3>
+        <button class="close-btn" onclick="closeQrModal()">&times;</button>
+      </div>
+      <div class="qr-display">
+        <img id="qrImage" src="" alt="Scan QR Code" />
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+          Scan with your phone camera to open the 5-question form:
+        </p>
+        <div class="qr-url" id="qrUrlText"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SETTINGS & QUESTIONS MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>⚙️ Customize Questions & Cloud Sync</h3>
+        <button class="close-btn" onclick="closeSettingsModal()">&times;</button>
+      </div>
+
+      <div class="settings-grid-2">
+        <div class="settings-group">
+          <label>Column 1 Header</label>
+          <input type="text" id="inputColA" />
+        </div>
+        <div class="settings-group">
+          <label>Column 2 Header</label>
+          <input type="text" id="inputColB" />
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <label>Question 1</label>
+        <input type="text" id="inputQ0" />
+      </div>
+      <div class="settings-group">
+        <label>Question 2</label>
+        <input type="text" id="inputQ1" />
+      </div>
+      <div class="settings-group">
+        <label>Question 3</label>
+        <input type="text" id="inputQ2" />
+      </div>
+      <div class="settings-group">
+        <label>Question 4</label>
+        <input type="text" id="inputQ3" />
+      </div>
+      <div class="settings-group">
+        <label>Question 5</label>
+        <input type="text" id="inputQ4" />
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--card-border); margin: 16px 0;" />
+
+      <div class="settings-group">
+        <label>Optional: Firebase Realtime Database URL (for cross-device phone scanning)</label>
+        <input type="text" id="inputFirebaseUrl" placeholder="https://your-project-default-rtdb.firebaseio.com" />
+        <small style="color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 4px;">
+          Leave blank for same-browser / local demo mode. Paste a Firebase Realtime DB URL to sync phones over Wi-Fi/cellular.
+        </small>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="saveSettings()">
+        💾 Save & Apply
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       APPLICATION LOGIC
+       ========================================== -->
+  <script>
+    const STORAGE_KEY = 'live_wordcloud_5x2_state_v1';
+    const CONFIG_KEY = 'live_wordcloud_5x2_config_v1';
+    const channel = ('BroadcastChannel' in window) ? new BroadcastChannel('wordcloud_5x2_channel') : null;
+
+    // Color palettes for Column A and Column B
+    const PALETTE_A = ['#38bdf8', '#7dd3fc', '#22d3ee', '#60a5fa', '#818cf8'];
+    const PALETTE_B = ['#c084fc', '#e879f9', '#f472b6', '#fb7185', '#a78bfa'];
+
+    // Default Configuration
+    let appConfig = {
+      colA: 'Answer 1 (Current / Pros)',
+      colB: 'Answer 2 (Future / Cons)',
+      questions: [
+        '1. How would you describe our current workflow vs. ideal workflow?',
+        '2. What is our biggest strength vs. biggest bottleneck?',
+        '3. Which tool helps you most vs. slows you down?',
+        '4. One word for Q1 performance vs. Q2 goal?',
+        '5. What excites you most vs. worries you most about this project?'
+      ],
+      firebaseUrl: ''
+    };
+
+    // Word frequency state: 5 rows x 2 columns
+    // Structure: state[rowIdx][colIdx] = { "word": count }
+    let wordState = Array.from({ length: 5 }, () => [{}, {}]);
+
+    // Initialize Application
+    function init() {
+      loadFromStorage();
+
+      // Check URL parameter for mobile mode (?mode=mobile)
+      const params = new URLSearchParams(window.location.search);
+      const fbParam = params.get('fb');
+      if (fbParam && !appConfig.firebaseUrl) {
+        appConfig.firebaseUrl = decodeURIComponent(fbParam);
+      }
+
+      if (params.get('mode') === 'mobile') {
+        document.body.classList.add('mobile-mode-active');
+      }
+
+      renderDesktopLayout();
+      renderMobileForm();
+      renderAllClouds();
+
+      // Listen for multi-tab BroadcastChannel updates
+      if (channel) {
+        channel.onmessage = (event) => {
+          if (event.data.type === 'STATE_UPDATE') {
+            wordState = event.data.wordState;
+            renderAllClouds();
+          } else if (event.data.type === 'CONFIG_UPDATE') {
+            appConfig = event.data.appConfig;
+            renderDesktopLayout();
+            renderMobileForm();
+            renderAllClouds();
+          }
+        };
+      }
+
+      // Listen for localStorage changes across tabs
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY) {
+          loadFromStorage();
+          renderAllClouds();
+        }
+      });
+
+      // Start Firebase polling if configured
+      startFirebaseSync();
+    }
+
+    function loadFromStorage() {
+      try {
+        const savedConfig = localStorage.getItem(CONFIG_KEY);
+        if (savedConfig) appConfig = JSON.parse(savedConfig);
+
+        const savedState = localStorage.getItem(STORAGE_KEY);
+        if (savedState) wordState = JSON.parse(savedState);
+      } catch (err) {
+        console.warn('Storage read error:', err);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(wordState));
+      if (channel) {
+        channel.postMessage({ type: 'STATE_UPDATE', wordState });
+      }
+      pushToFirebase();
+    }
+
+    // Build the 5x2 Desktop Grid HTML
+    function renderDesktopLayout() {
+      document.getElementById('headerColA').textContent = appConfig.colA;
+      document.getElementById('headerColB').textContent = appConfig.colB;
+
+      const container = document.getElementById('desktopGridRows');
+      container.innerHTML = '';
+
+      appConfig.questions.forEach((qText, rIdx) => {
+        const row = document.createElement('div');
+        row.className = 'question-row';
+        row.innerHTML = `
+          <div class="question-card">
+            <div class="q-badge">
+              <span>Question ${rIdx + 1}</span>
+              <span id="rowCount-${rIdx}">0 words</span>
+            </div>
+            <div class="q-text">${escapeHtml(qText)}</div>
+          </div>
+          <div class="cloud-cell" id="cloud-${rIdx}-0"></div>
+          <div class="cloud-cell" id="cloud-${rIdx}-1"></div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Render Word Clouds inside all 10 cells (5 rows x 2 cols)
+    function renderAllClouds() {
+      for (let r = 0; r < 5; r++) {
+        let rowTotal = 0;
+        for (let c = 0; c < 2; c++) {
+          const cell = document.getElementById(`cloud-${r}-${c}`);
+          if (!cell) continue;
+
+          const freqMap = wordState[r][c] || {};
+          const entries = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
+
+          if (entries.length === 0) {
+            cell.innerHTML = `<span class="cloud-empty">Waiting for responses...</span>`;
+            continue;
+          }
+
+          const counts = entries.map(e => e[1]);
+          const maxCount = Math.max(...counts, 1);
+          const minCount = Math.min(...counts, 1);
+
+          // Shuffle slightly so largest words cluster near center naturally
+          const arranged = [];
+          entries.forEach((entry, idx) => {
+            if (idx % 2 === 0) arranged.push(entry);
+            else arranged.unshift(entry);
+          });
+
+          const palette = c === 0 ? PALETTE_A : PALETTE_B;
+
+          cell.innerHTML = arranged.map(([word, count], i) => {
+            rowTotal += count;
+            // Scale font between 0.78rem and 1.65rem so everything fits inside 1/5th screen height
+            const ratio = maxCount === minCount ? 0.5 : (count - minCount) / (maxCount - minCount);
+            const fontSize = (0.78 + ratio * 0.87).toFixed(2);
+            const color = palette[i % palette.length];
+            return `
+              <span class="word-item" style="font-size: ${fontSize}rem; color: ${color};" title="${escapeHtml(word)}: ${count}">
+                ${escapeHtml(word)}
+                ${count > 1 ? `<span class="word-count">${count}</span>` : ''}
+              </span>
+            `;
+          }).join('');
+        }
+
+        const badge = document.getElementById(`rowCount-${r}`);
+        if (badge) badge.textContent = `${rowTotal} ${rowTotal === 1 ? 'entry' : 'entries'}`;
+      }
+    }
+
+    // Build Mobile Form
+    function renderMobileForm() {
+      const list = document.getElementById('mobileQuestionsList');
+      list.innerHTML = appConfig.questions.map((qText, rIdx) => `
+        <div class="mobile-q-card">
+          <div class="mobile-q-title">${escapeHtml(qText)}</div>
+          <div class="mobile-inputs">
+            <div class="input-group">
+              <label>${escapeHtml(appConfig.colA)}</label>
+              <input type="text" name="q_${rIdx}_0" maxlength="28" placeholder="Type word/phrase..." />
+            </div>
+            <div class="input-group">
+              <label>${escapeHtml(appConfig.colB)}</label>
+              <input type="text" name="q_${rIdx}_1" maxlength="28" placeholder="Type word/phrase..." />
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Handle Mobile Submission
+    function handleMobileSubmit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      let addedAny = false;
+
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 2; c++) {
+          const raw = (formData.get(`q_${r}_${c}`) || '').trim();
+          if (raw) {
+            // Normalize casing (Title Case / lowercase match)
+            const cleanWord = raw.replace(/\s+/g, ' ');
+            const key = Object.keys(wordState[r][c]).find(
+              k => k.toLowerCase() === cleanWord.toLowerCase()
+            ) || cleanWord;
+
+            wordState[r][c][key] = (wordState[r][c][key] || 0) + 1;
+            addedAny = true;
+          }
+        }
+      }
+
+      if (addedAny) {
+        saveState();
+        renderAllClouds();
+        e.target.reset();
+        const toast = document.getElementById('submitToast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3500);
+      }
+    }
+
+    // Toggle Mobile Preview on Desktop
+    function toggleMobilePreview() {
+      const isMobile = document.body.classList.toggle('mobile-mode-active');
+      document.getElementById('backToDesktopBtn').style.display = isMobile ? 'inline-flex' : 'none';
+    }
+
+    // Populate Realistic Demo Words to Preview 5x2 Layout
+    function seedDemoData() {
+      const sampleA = [
+        ['Fast', 'Collaborative', 'Manual', 'Spreadsheets', 'Agile', 'Trusted'],
+        ['Teamwork', 'Domain Knowledge', 'Speed', 'Customer Focus', 'Quality'],
+        ['Slack', 'Excel', 'Canvas', 'PowerBI', 'GitHub'],
+        ['Resilient', 'Strong Start', 'Focused', 'Busy', 'Momentum'],
+        ['Automation', 'AI Adoption', 'Global Reach', 'New Launch', 'Growth']
+      ];
+      const sampleB = [
+        ['Automated', 'Real-Time', 'Seamless', 'Cloud-Native', 'Unified'],
+        ['Silos', 'Approvals', 'Legacy Data', 'Handoffs', 'Timezones'],
+        ['Email Chains', 'Manual Entry', 'VPN Lag', 'Old Portal'],
+        ['Scale Up', 'Record Growth', 'Streamlined', '10x Impact'],
+        ['Timeline', 'Change Mgmt', 'Training', 'Bandwidth', 'Scope Creep']
+      ];
+
+      for (let r = 0; r < 5; r++) {
+        sampleA[r].forEach((w, idx) => {
+          wordState[r][0][w] = (wordState[r][0][w] || 0) + (idx % 3) + 1;
+        });
+        sampleB[r].forEach((w, idx) => {
+          wordState[r][1][w] = (wordState[r][1][w] || 0) + (idx % 4) + 1;
+        });
+      }
+      saveState();
+      renderAllClouds();
+    }
+
+    function clearAllWords() {
+      if (!confirm('Clear all submitted words across all 5 questions?')) return;
+      wordState = Array.from({ length: 5 }, () => [{}, {}]);
+      saveState();
+      renderAllClouds();
+    }
+
+    // QR Code Modal
+    function openQrModal() {
+      const baseUrl = window.location.href.split('?')[0];
+      const fbQuery = appConfig.firebaseUrl ? `&fb=${encodeURIComponent(appConfig.firebaseUrl)}` : '';
+      const mobileUrl = `${baseUrl}?mode=mobile${fbQuery}`;
+
+      document.getElementById('qrUrlText').textContent = mobileUrl;
+      document.getElementById('qrImage').src =
+        `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(mobileUrl)}`;
+      document.getElementById('qrModal').classList.add('active');
+    }
+
+    function closeQrModal() {
+      document.getElementById('qrModal').classList.remove('active');
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      document.getElementById('inputColA').value = appConfig.colA;
+      document.getElementById('inputColB').value = appConfig.colB;
+      appConfig.questions.forEach((q, i) => {
+        document.getElementById(`inputQ${i}`).value = q;
+      });
+      document.getElementById('inputFirebaseUrl').value = appConfig.firebaseUrl || '';
+      document.getElementById('settingsModal').classList.add('active');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').classList.remove('active');
+    }
+
+    function saveSettings() {
+      appConfig.colA = document.getElementById('inputColA').value.trim() || 'Answer 1';
+      appConfig.colB = document.getElementById('inputColB').value.trim() || 'Answer 2';
+      for (let i = 0; i < 5; i++) {
+        appConfig.questions[i] = document.getElementById(`inputQ${i}`).value.trim() || `Question ${i + 1}`;
+      }
+      appConfig.firebaseUrl = document.getElementById('inputFirebaseUrl').value.trim().replace(/\/$/, '');
+
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(appConfig));
+      if (channel) {
+        channel.postMessage({ type: 'CONFIG_UPDATE', appConfig });
+      }
+      renderDesktopLayout();
+      renderMobileForm();
+      renderAllClouds();
+      startFirebaseSync();
+      closeSettingsModal();
+    }
+
+    // Optional Cross-Device Sync via Firebase REST API
+    let fbInterval = null;
+    function startFirebaseSync() {
+      if (fbInterval) clearInterval(fbInterval);
+      const statusEl = document.getElementById('syncStatusText');
+
+      if (!appConfig.firebaseUrl) {
+        statusEl.textContent = 'Local / Multi-Tab Sync';
+        return;
+      }
+
+      statusEl.textContent = 'Cloud Phone Sync Active';
+      fbInterval = setInterval(async () => {
+        try {
+          const res = await fetch(`${appConfig.firebaseUrl}/wordcloud5x2.json`);
+          if (res.ok) {
+            const remoteData = await res.json();
+            if (remoteData && Array.isArray(remoteData)) {
+              wordState = remoteData;
+              renderAllClouds();
+            }
+          }
+        } catch (e) {
+          console.warn('Cloud sync poll error:', e);
+        }
+      }, 2500);
+    }
+
+    async function pushToFirebase() {
+      if (!appConfig.firebaseUrl) return;
+      try {
+        await fetch(`${appConfig.firebaseUrl}/wordcloud5x2.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(wordState)
+        });
+      } catch (e) {
+        console.warn('Cloud sync push error:', e);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
