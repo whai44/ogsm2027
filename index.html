@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5-Page Pros & Cons Live Word Cloud</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --pros-color: #34d399;
+      --pros-bg: rgba(16, 185, 129, 0.08);
+      --pros-border: rgba(52, 211, 153, 0.35);
+      --cons-color: #fb7185;
+      --cons-bg: rgba(244, 63, 94, 0.08);
+      --cons-border: rgba(251, 113, 133, 0.35);
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --header-height: 60px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden; /* Strict 1-page viewport fit on desktop */
+      height: 100vh;
+      width: 100vw;
+    }
+
+    body.mobile-mode-active {
+      overflow-y: auto;
+      height: auto;
+      min-height: 100vh;
+    }
+
+    /* ==========================================
+       TOP NAVIGATION BAR (DESKTOP)
+       ========================================== */
+    .top-bar {
+      height: var(--header-height);
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #34d399, #38bdf8, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+
+    .status-badge {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--pros-color);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--pros-color);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* PAGE NAVIGATION PILLS (1 TO 5) */
+    .page-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 41, 59, 0.8);
+      padding: 4px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+
+    .page-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .page-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .page-btn.active {
+      background: linear-gradient(135deg, #0284c7, #7e22ce);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #7e22ce);
+      border-color: transparent;
+    }
+
+    .btn-danger {
+      color: #fda4af;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+
+    /* ==========================================
+       1-PAGE PER QUESTION: PROS & CONS SPLIT VIEW
+       ========================================== */
+    .slide-container {
+      height: calc(100vh - var(--header-height));
+      display: flex;
+      flex-direction: column;
+      padding: 16px 24px 20px 24px;
+      gap: 16px;
+    }
+
+    /* QUESTION HEADER BANNER */
+    .question-banner {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border: 1px solid var(--card-border);
+      border-left: 6px solid var(--accent-blue);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .q-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .q-step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-blue);
+    }
+
+    .q-headline {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+    }
+
+    .q-stats {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .stat-pill {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-pill .num {
+      font-size: 1.25rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .stat-pill .lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    /* 2-COLUMN PROS VS CONS GRID */
+    .split-columns {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      min-height: 0;
+    }
+
+    .side-panel {
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+    }
+
+    .side-panel.pros-panel {
+      background: var(--pros-bg);
+      border: 2px solid var(--pros-border);
+    }
+
+    .side-panel.cons-panel {
+      background: var(--cons-bg);
+      border: 2px solid var(--cons-border);
+    }
+
+    .side-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .pros-panel .side-header {
+      background: rgba(16, 185, 129, 0.15);
+      border-bottom: 1px solid var(--pros-border);
+      color: var(--pros-color);
+    }
+
+    .cons-panel .side-header {
+      background: rgba(244, 63, 94, 0.15);
+      border-bottom: 1px solid var(--cons-border);
+      color: var(--cons-color);
+    }
+
+    .side-count {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-main);
+    }
+
+    /* WORD CLOUD CANVAS AREA */
+    .cloud-canvas {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      gap: 10px 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .empty-hint {
+      font-size: 0.95rem;
+      color: rgba(148, 163, 184, 0.45);
+      font-style: italic;
+      text-align: center;
+      user-select: none;
+    }
+
+    .word-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      line-height: 1.15;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: popIn 0.35s ease forwards;
+      user-select: none;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .word-tag:hover {
+      transform: scale(1.1) !important;
+      z-index: 5;
+    }
+
+    .word-count-sup {
+      font-size: 0.65em;
+      opacity: 0.85;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ==========================================
+       MOBILE PARTICIPANT SUBMISSION VIEW
+       ========================================== */
+    .mobile-wrapper {
+      display: none;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 20px 16px 60px 16px;
+    }
+
+    body.mobile-mode-active .top-bar,
+    body.mobile-mode-active .slide-container {
+      display: none;
+    }
+
+    body.mobile-mode-active .mobile-wrapper {
+      display: block;
+    }
+
+    .mobile-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .mobile-header h2 {
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+      background: linear-gradient(90deg, #34d399, #38bdf8, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mobile-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* MOBILE PAGE TABS (Q1 - Q5) */
+    .mobile-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .m-tab {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 10px 4px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .m-tab.active {
+      background: linear-gradient(135deg, #0284c7, #7e22ce);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .m-tab.done {
+      border-color: var(--pros-color);
+      color: var(--pros-color);
+    }
+
+    .mobile-q-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .mobile-q-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .label-pros { color: var(--pros-color); }
+    .label-cons { color: var(--cons-color); }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .input-group input.pros-input:focus {
+      border-color: var(--pros-color);
+    }
+
+    .input-group input.cons-input:focus {
+      border-color: var(--cons-color);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #059669, #0284c7);
+      color: white;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .mobile-nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mobile-nav-row button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .toast-msg {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid var(--pros-color);
+      color: var(--pros-color);
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* ==========================================
+       MODALS (QR CODE, SETUP, BULK IMPORT)
+       ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.82);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      max-width: 540px;
+      width: 100%;
+      padding: 22px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .qr-box {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 12px auto;
+    }
+
+    .url-box {
+      background: #0f172a;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--accent-blue);
+      word-break: break-all;
+      margin-top: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .config-field {
+      margin-bottom: 10px;
+    }
+
+    .config-field label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .config-field input,
+    .config-field textarea,
+    .config-field select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+      color: var(--text-main);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP BAR (DESKTOP)
+       ========================================== -->
+  <header class="top-bar">
+    <div class="brand">
+      <h1>⚖️ Pros & Cons Word Cloud</h1>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span id="syncStatusText">Live Ready</span>
+      </div>
+    </div>
+
+    <!-- 5 PAGE NAVIGATION BUTTONS -->
+    <nav class="page-nav" aria-label="Question Pages">
+      <button class="btn" onclick="prevPage()" title="Previous Question (Left Arrow)">◀</button>
+      <button class="page-btn active" id="pageBtn0" onclick="goToPage(0)">Page 1</button>
+      <button class="page-btn" id="pageBtn1" onclick="goToPage(1)">Page 2</button>
+      <button class="page-btn" id="pageBtn2" onclick="goToPage(2)">Page 3</button>
+      <button class="page-btn" id="pageBtn3" onclick="goToPage(3)">Page 4</button>
+      <button class="page-btn" id="pageBtn4" onclick="goToPage(4)">Page 5</button>
+      <button class="btn" onclick="nextPage()" title="Next Question (Right Arrow)">▶</button>
+    </nav>
+
+    <div class="controls">
+      <button class="btn btn-primary" onclick="openModal('qrModal')">📱 Show QR Code</button>
+      <button class="btn" onclick="openModal('importModal')">📥 Bulk Import</button>
+      <button class="btn" onclick="toggleMobilePreview()">📲 Phone Form</button>
+      <button class="btn" onclick="seedDemoWords()">✨ Demo Fill</button>
+      <button class="btn" onclick="openModal('setupModal')">⚙️ Edit 5 Questions</button>
+      <button class="btn btn-danger" onclick="clearAllWords()">🗑️ Reset</button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       1-PAGE PER QUESTION: PROS & CONS DISPLAY
+       ========================================== -->
+  <main class="slide-container">
+    <!-- Top Question Header Banner -->
+    <section class="question-banner" id="questionBanner">
+      <div class="q-meta">
+        <span class="q-step-badge" id="slideStepBadge">QUESTION 1 OF 5</span>
+        <h2 class="q-headline" id="slideQuestionTitle">1. What are the Pros & Cons of Remote / Hybrid Work?</h2>
+      </div>
+      <div class="q-stats">
+        <div class="stat-pill">
+          <span class="num" id="statProsCount" style="color: var(--pros-color);">0</span>
+          <span class="lbl" id="statProsLabel">Pros</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num" id="statConsCount" style="color: var(--cons-color);">0</span>
+          <span class="lbl" id="statConsLabel">Cons</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2-Column Split: Pros (Left) vs Cons (Right) -->
+    <section class="split-columns">
+      <!-- LEFT SIDE: PROS -->
+      <div class="side-panel pros-panel">
+        <div class="side-header">
+          <span id="leftHeaderTitle">👍 PROS / ADVANTAGES</span>
+          <span class="side-count" id="leftBadgeCount">0 words</span>
+        </div>
+        <div class="cloud-canvas" id="prosCloudCanvas"></div>
+      </div>
+
+      <!-- RIGHT SIDE: CONS -->
+      <div class="side-panel cons-panel">
+        <div class="side-header">
+          <span id="rightHeaderTitle">⚠️ CONS / CHALLENGES</span>
+          <span class="side-count" id="rightBadgeCount">0 words</span>
+        </div>
+        <div class="cloud-canvas" id="consCloudCanvas"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       MOBILE PARTICIPANT SUBMISSION VIEW
+       ========================================== -->
+  <section class="mobile-wrapper" id="mobileWrapper">
+    <div class="mobile-header">
+      <h2>⚖️ Submit Pros & Cons</h2>
+      <p>Select a question below and enter 1–3 words per side</p>
+    </div>
+
+    <!-- Question 1 to 5 Selector Tabs on Phone -->
+    <div class="mobile-tabs">
+      <button type="button" class="m-tab active" id="mTab0" onclick="selectMobileQuestion(0)">Q1</button>
+      <button type="button" class="m-tab" id="mTab1" onclick="selectMobileQuestion(1)">Q2</button>
+      <button type="button" class="m-tab" id="mTab2" onclick="selectMobileQuestion(2)">Q3</button>
+      <button type="button" class="m-tab" id="mTab3" onclick="selectMobileQuestion(3)">Q4</button>
+      <button type="button" class="m-tab" id="mTab4" onclick="selectMobileQuestion(4)">Q5</button>
+    </div>
+
+    <form id="mobileForm" onsubmit="handleMobileSubmit(event)">
+      <div class="mobile-q-card">
+        <div style="font-size:0.75rem; font-weight:800; color:var(--accent-blue); text-transform:uppercase; margin-bottom:4px;" id="mQuestionBadge">
+          Page 1 of 5
+        </div>
+        <h3 id="mQuestionText">1. What are the Pros & Cons of Remote / Hybrid Work?</h3>
+
+        <div class="input-group">
+          <label class="label-pros" id="mLabelPros">👍 PROS (Advantages / Strengths)</label>
+          <input type="text" class="pros-input" id="mInputPros" placeholder="e.g., Flexibility, Focus, No Commute" maxlength="45" />
+        </div>
+
+        <div class="input-group">
+          <label class="label-cons" id="mLabelCons">⚠️ CONS (Risks / Challenges)</label>
+          <input type="text" class="cons-input" id="mInputCons" placeholder="e.g., Isolation, Tech Issues, Burnout" maxlength="45" />
+        </div>
+
+        <button type="submit" class="submit-btn">🚀 Send to Page <span id="mBtnPageNum">1</span> Word Cloud</button>
+        <div class="toast-msg" id="mobileToast">✅ Sent to live screen! Tap next question below.</div>
+      </div>
+    </form>
+
+    <div class="mobile-nav-row">
+      <button type="button" onclick="selectMobileQuestion(Math.max(0, mobileQuestionIndex - 1))">◀ Previous Question</button>
+      <button type="button" onclick="selectMobileQuestion(Math.min(4, mobileQuestionIndex + 1))">Next Question ▶</button>
+    </div>
+
+    <div style="text-align:center; margin-top:20px;">
+      <button class="btn" onclick="exitMobileMode()">🖥️ Return to Desktop Display</button>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       QR CODE MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-card" style="text-align:center;">
+      <div class="modal-header">
+        <h3>📱 Scan to Submit Pros & Cons</h3>
+        <button class="close-btn" onclick="closeModal('qrModal')">&times;</button>
+      </div>
+      <p style="font-size:0.86rem; color:var(--text-muted);">
+        Scan with your phone camera to submit Pros & Cons for all 5 questions in real time.
+      </p>
+      <div class="qr-box">
+        <img id="qrImage" src="" alt="QR Code" width="210" height="210" />
+      </div>
+      <div class="url-box" id="mobileUrlDisplay"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       BULK IMPORT MODAL (FORMS / EXCEL)
+       ========================================== -->
+  <div class="modal-overlay" id="importModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📥 Bulk Paste Pros & Cons</h3>
+        <button class="close-btn" onclick="closeModal('importModal')">&times;</button>
+      </div>
+      <div class="config-field">
+        <label>Select Which Question Page to Add Words To:</label>
+        <select id="bulkQuestionSelect">
+          <option value="0">Page 1 (Question 1)</option>
+          <option value="1">Page 2 (Question 2)</option>
+          <option value="2">Page 3 (Question 3)</option>
+          <option value="3">Page 4 (Question 4)</option>
+          <option value="4">Page 5 (Question 5)</option>
+        </select>
+      </div>
+      <div class="config-field">
+        <label style="color:var(--pros-color);">👍 Paste PROS Words (comma or new-line separated)</label>
+        <textarea id="bulkProsInput" rows="3" placeholder="Fast, Easy, Cost saving, Scalable"></textarea>
+      </div>
+      <div class="config-field">
+        <label style="color:var(--cons-color);">⚠️ Paste CONS Words (comma or new-line separated)</label>
+        <textarea id="bulkConsInput" rows="3" placeholder="Expensive, Training needed, Slow setup"></textarea>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+        <button class="btn" onclick="closeModal('importModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="processBulkImport()">➕ Add to Page</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SETUP & 5 QUESTIONS CONFIG MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="setupModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⚙️ Edit 5 Questions & Cloud Sync</h3>
+        <button class="close-btn" onclick="closeModal('setupModal')">&times;</button>
+      </div>
+      <div class="config-field">
+        <label>Left Side Header (Pros)</label>
+        <input type="text" id="cfgColA" />
+      </div>
+      <div class="config-field">
+        <label>Right Side Header (Cons)</label>
+        <input type="text" id="cfgColB" />
+      </div>
+      <div class="config-field">
+        <label>Page 1 Question</label>
+        <input type="text" id="cfgQ0" />
+      </div>
+      <div class="config-field">
+        <label>Page 2 Question</label>
+        <input type="text" id="cfgQ1" />
+      </div>
+      <div class="config-field">
+        <label>Page 3 Question</label>
+        <input type="text" id="cfgQ2" />
+      </div>
+      <div class="config-field">
+        <label>Page 4 Question</label>
+        <input type="text" id="cfgQ3" />
+      </div>
+      <div class="config-field">
+        <label>Page 5 Question</label>
+        <input type="text" id="cfgQ4" />
+      </div>
+      <hr style="border-color:var(--card-border); margin: 14px 0;" />
+      <div class="config-field">
+        <label>Optional Custom QR Link (Leave blank to use built-in mobile form)</label>
+        <input type="text" id="cfgCustomQr" placeholder="https://forms.office.com/r/..." />
+      </div>
+      <div class="config-field">
+        <label>Firebase Realtime DB URL (For Live Phone-to-Desktop Sync)</label>
+        <input type="text" id="cfgFirebase" placeholder="https://your-project-default-rtdb.firebaseio.com" />
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button class="btn" onclick="closeModal('setupModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveConfiguration()">💾 Save & Sync All Pages</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====================================================
+    // STATE & DEFAULT CONFIGURATION (5 PAGES: PROS vs CONS)
+    // ====================================================
+    const STORAGE_KEY_STATE = 'wc_5pages_proscons_data_v2';
+    const STORAGE_KEY_CFG = 'wc_5pages_proscons_cfg_v2';
+
+    const defaultConfig = {
+      colA: '👍 PROS / ADVANTAGES',
+      colB: '⚠️ CONS / CHALLENGES',
+      questions: [
+        '1. What are the Pros & Cons of AI Automation in our workflow?',
+        '2. What are the Pros & Cons of our current Hybrid Work policy?',
+        '3. What are the Pros & Cons of launching our new product line early?',
+        '4. What are the Pros & Cons of centralizing our team tools?',
+        '5. What are the Pros & Cons of our 2025 strategic roadmap?'
+      ],
+      customQrUrl: '',
+      firebaseUrl: ''
+    };
+
+    const PROS_PALETTE = ['#34d399', '#10b981', '#6ee7b7', '#2dd4bf', '#38bdf8', '#a3e635'];
+    const CONS_PALETTE = ['#fb7185', '#f43f5e', '#fda4af', '#fb923c', '#f87171', '#facc15'];
+
+    let appConfig = loadConfig();
+    let wordState = loadWordState();
+    let currentPage = 0;         // Current desktop slide (0 to 4)
+    let mobileQuestionIndex = 0; // Current mobile tab (0 to 4)
+
+    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('wordcloud_proscons_channel') : null;
+
+    function createEmptyState() {
+      // 5 questions, each has [prosBag, consBag]
+      return Array.from({ length: 5 }, () => [{}, {}]);
+    }
+
+    function loadConfig() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_CFG);
+        return raw ? { ...defaultConfig, ...JSON.parse(raw) } : { ...defaultConfig };
+      } catch (e) {
+        return { ...defaultConfig };
+      }
+    }
+
+    function loadWordState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_STATE);
+        return raw ? JSON.parse(raw) : createEmptyState();
+      } catch (e) {
+        return createEmptyState();
+      }
+    }
+
+    function saveWordState(broadcast = true) {
+      localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(wordState));
+      if (broadcast && syncChannel) {
+        syncChannel.postMessage({ type: 'SYNC_STATE', payload: wordState });
+      }
+      if (broadcast && appConfig.firebaseUrl) {
+        pushToFirebase();
+      }
+    }
+
+    // ====================================================
+    // DESKTOP 5-PAGE RENDERING (1 PAGE PER QUESTION)
+    // ====================================================
+    function goToPage(pageIdx) {
+      currentPage = Math.max(0, Math.min(4, pageIdx));
+      for (let i = 0; i < 5; i++) {
+        const btn = document.getElementById('pageBtn' + i);
+        if (btn) btn.classList.toggle('active', i === currentPage);
+      }
+      renderCurrentSlide();
+    }
+
+    function prevPage() {
+      goToPage((currentPage + 4) % 5);
+    }
+
+    function nextPage() {
+      goToPage((currentPage + 1) % 5);
+    }
+
+    // Support Left / Right keyboard arrows for easy presentation control
+    window.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('mobile-mode-active')) return;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+      if (e.key === 'ArrowRight') nextPage();
+      if (e.key === 'ArrowLeft') prevPage();
+    });
+
+    function renderCurrentSlide() {
+      const qText = appConfig.questions[currentPage] || `Question ${currentPage + 1}`;
+      document.getElementById('slideStepBadge').textContent = `PAGE ${currentPage + 1} OF 5 • LIVE PROS & CONS`;
+      document.getElementById('slideQuestionTitle').textContent = qText;
+
+      document.getElementById('leftHeaderTitle').textContent = appConfig.colA;
+      document.getElementById('rightHeaderTitle').textContent = appConfig.colB;
+
+      const prosBag = (wordState[currentPage] && wordState[currentPage][0]) ? wordState[currentPage][0] : {};
+      const consBag = (wordState[currentPage] && wordState[currentPage][1]) ? wordState[currentPage][1] : {};
+
+      const totalPros = Object.values(prosBag).reduce((a, b) => a + b, 0);
+      const totalCons = Object.values(consBag).reduce((a, b) => a + b, 0);
+
+      document.getElementById('statProsCount').textContent = totalPros;
+      document.getElementById('statConsCount').textContent = totalCons;
+      document.getElementById('leftBadgeCount').textContent = `${totalPros} response${totalPros === 1 ? '' : 's'}`;
+      document.getElementById('rightBadgeCount').textContent = `${totalCons} response${totalCons === 1 ? '' : 's'}`;
+
+      renderCloudBox('prosCloudCanvas', prosBag, PROS_PALETTE, 'No Pros submitted for this question yet — scan QR to add!');
+      renderCloudBox('consCloudCanvas', consBag, CONS_PALETTE, 'No Cons submitted for this question yet — scan QR to add!');
+    }
+
+    function renderCloudBox(elementId, bag, palette, emptyMessage) {
+      const container = document.getElementById(elementId);
+      if (!container) return;
+
+      const entries = Object.entries(bag).sort((a, b) => b[1] - a[1]);
+      if (entries.length === 0) {
+        container.innerHTML = `<span class="empty-hint">${emptyMessage}</span>`;
+        return;
+      }
+
+      const maxCount = Math.max(...entries.map(e => e[1]), 1);
+      const minCount = Math.min(...entries.map(e => e[1]), 1);
+
+      // Shuffle slightly so largest words cluster near the middle
+      const arranged = [];
+      entries.forEach((item, idx) => {
+        if (idx % 2 === 0) arranged.push(item);
+        else arranged.unshift(item);
+      });
+
+      container.innerHTML = '';
+      arranged.forEach(([word, count], idx) => {
+        const span = document.createElement('span');
+        span.className = 'word-tag';
+
+        // Scale font size dynamically between 1.05rem and 2.85rem
+        const ratio = maxCount === minCount ? 0.55 : (count - minCount) / (maxCount - minCount);
+        const fontSize = (1.05 + ratio * 1.8).toFixed(2);
+        const color = palette[(word.charCodeAt(0) + idx) % palette.length];
+
+        span.style.fontSize = `${fontSize}rem`;
+        span.style.color = color;
+        span.style.background = 'rgba(15, 23, 42, 0.72)';
+        span.style.border = `1px solid ${color}55`;
+
+        span.innerHTML = `${escapeHtml(word)} ${count > 1 ? `<sup class="word-count-sup">${count}</sup>` : ''}`;
+        container.appendChild(span);
+      });
+    }
+
+    // ====================================================
+    // MOBILE PARTICIPANT VIEW (Q1 - Q5 TABS)
+    // ====================================================
+    function selectMobileQuestion(qIdx) {
+      mobileQuestionIndex = Math.max(0, Math.min(4, qIdx));
+      for (let i = 0; i < 5; i++) {
+        const tab = document.getElementById('mTab' + i);
+        if (tab) tab.classList.toggle('active', i === mobileQuestionIndex);
+      }
+      document.getElementById('mQuestionBadge').textContent = `Question ${mobileQuestionIndex + 1} of 5`;
+      document.getElementById('mQuestionText').textContent = appConfig.questions[mobileQuestionIndex];
+      document.getElementById('mLabelPros').textContent = appConfig.colA;
+      document.getElementById('mLabelCons').textContent = appConfig.colB;
+      document.getElementById('mBtnPageNum').textContent = (mobileQuestionIndex + 1);
+      document.getElementById('mobileToast').style.display = 'none';
+    }
+
+    function addWordsToBag(qIdx, sideIdx, rawString) {
+      if (!rawString || !rawString.trim()) return false;
+      const parts = rawString.split(/[,;\n]+/).map(s => s.trim()).filter(Boolean);
+      let added = false;
+      parts.forEach(part => {
+        const clean = part.replace(/\s+/g, ' ').trim();
+        if (!clean) return;
+        const label = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+        wordState[qIdx][sideIdx][label] = (wordState[qIdx][sideIdx][label] || 0) + 1;
+        added = true;
+      });
+      return added;
+    }
+
+    function handleMobileSubmit(e) {
+      e.preventDefault();
+      const prosInput = document.getElementById('mInputPros');
+      const consInput = document.getElementById('mInputCons');
+
+      const addedPros = addWordsToBag(mobileQuestionIndex, 0, prosInput.value);
+      const addedCons = addWordsToBag(mobileQuestionIndex, 1, consInput.value);
+
+      if (addedPros || addedCons) {
+        prosInput.value = '';
+        consInput.value = '';
+        document.getElementById('mTab' + mobileQuestionIndex).classList.add('done');
+        saveWordState(true);
+        renderCurrentSlide();
+
+        const toast = document.getElementById('mobileToast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2500);
+      }
+    }
+
+    // ====================================================
+    // BULK IMPORT & DEMO DATA
+    // ====================================================
+    function processBulkImport() {
+      const qIdx = parseInt(document.getElementById('bulkQuestionSelect').value, 10) || 0;
+      const prosRaw = document.getElementById('bulkProsInput').value;
+      const consRaw = document.getElementById('bulkConsInput').value;
+
+      addWordsToBag(qIdx, 0, prosRaw);
+      addWordsToBag(qIdx, 1, consRaw);
+
+      document.getElementById('bulkProsInput').value = '';
+      document.getElementById('bulkConsInput').value = '';
+      saveWordState(true);
+      goToPage(qIdx);
+      closeModal('importModal');
+    }
+
+    function seedDemoWords() {
+      const demo = [
+        [
+          ['Saves Time', 'Saves Time', 'Saves Time', '24/7 Speed', '24/7 Speed', 'Fewer Errors', 'Scalable', 'Data Insights', 'Productivity'],
+          ['Setup Cost', 'Setup Cost', 'Learning Curve', 'Learning Curve', 'Job Anxiety', 'Privacy Risk', 'Over-reliance']
+        ],
+        [
+          ['No Commute', 'No Commute', 'No Commute', 'Work-Life Balance', 'Work-Life Balance', 'Deep Focus', 'Flexibility', 'Lower Office Cost'],
+          ['Isolation', 'Isolation', 'Harder Onboarding', 'Harder Onboarding', 'Zoom Fatigue', 'Async Delays', 'Wi-Fi Issues']
+        ],
+        [
+          ['First Mover', 'First Mover', 'Early Feedback', 'Early Feedback', 'Fast Revenue', 'Market Buzz', 'Team Momentum'],
+          ['Minor Bugs', 'Minor Bugs', 'Support Load', 'Rushed QA', 'Scope Cuts', 'Marketing Rush']
+        ],
+        [
+          ['Single Login', 'Single Login', 'Lower License Cost', 'Lower License Cost', 'Easy Search', 'Better Security', 'Clean Data'],
+          ['Migration Pain', 'Migration Pain', 'Retraining', 'Vendor Lock-in', 'Missing Niche Features']
+        ],
+        [
+          ['Clear Vision', 'Clear Vision', 'Customer Focused', 'Customer Focused', 'High ROI', 'Global Growth', 'Strong Alignment'],
+          ['Tight Deadlines', 'Tight Deadlines', 'Hiring Bottleneck', 'Budget Stretch', 'Market Uncertainty']
+        ]
+      ];
+
+      for (let q = 0; q < 5; q++) {
+        demo[q][0].forEach(w => addWordsToBag(q, 0, w));
+        demo[q][1].forEach(w => addWordsToBag(q, 1, w));
+      }
+      saveWordState(true);
+      renderCurrentSlide();
+    }
+
+    function clearAllWords() {
+      if (!confirm('Clear all Pros & Cons responses across all 5 pages?')) return;
+      wordState = createEmptyState();
+      saveWordState(true);
+      renderCurrentSlide();
+    }
+
+    // ====================================================
+    // MODALS, QR CODE & FIREBASE TWO-WAY CLOUD SYNC
+    // ====================================================
+    function openModal(id) {
+      if (id === 'qrModal') updateQrCode();
+      if (id === 'setupModal') populateSetupModal();
+      if (id === 'importModal') {
+        document.getElementById('bulkQuestionSelect').value = String(currentPage);
+      }
+      document.getElementById(id).classList.add('open');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function updateQrCode() {
+      const base = window.location.href.split('?')[0];
+      const fbParam = appConfig.firebaseUrl ? `&fb=${encodeURIComponent(appConfig.firebaseUrl)}` : '';
+      const targetUrl = (appConfig.customQrUrl && appConfig.customQrUrl.trim())
+        ? appConfig.customQrUrl.trim()
+        : `${base}?mode=mobile${fbParam}`;
+
+      document.getElementById('mobileUrlDisplay').textContent = targetUrl;
+      document.getElementById('qrImage').src =
+        `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(targetUrl)}`;
+    }
+
+    function populateSetupModal() {
+      document.getElementById('cfgColA').value = appConfig.colA;
+      document.getElementById('cfgColB').value = appConfig.colB;
+      for (let i = 0; i < 5; i++) {
+        document.getElementById('cfgQ' + i).value = appConfig.questions[i];
+      }
+      document.getElementById('cfgCustomQr').value = appConfig.customQrUrl || '';
+      document.getElementById('cfgFirebase').value = appConfig.firebaseUrl || '';
+    }
+
+    function saveConfiguration() {
+      appConfig.colA = document.getElementById('cfgColA').value.trim() || '👍 PROS';
+      appConfig.colB = document.getElementById('cfgColB').value.trim() || '⚠️ CONS';
+      for (let i = 0; i < 5; i++) {
+        appConfig.questions[i] = document.getElementById('cfgQ' + i).value.trim() || `Question ${i + 1}`;
+      }
+      appConfig.customQrUrl = document.getElementById('cfgCustomQr').value.trim();
+      appConfig.firebaseUrl = document.getElementById('cfgFirebase').value.trim().replace(/\/$/, '');
+
+      localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(appConfig));
+      renderCurrentSlide();
+      selectMobileQuestion(mobileQuestionIndex);
+      closeModal('setupModal');
+
+      if (appConfig.firebaseUrl) {
+        pushToFirebase();
+        startFirebasePolling();
+      }
+    }
+
+    function toggleMobilePreview() {
+      document.body.classList.add('mobile-mode-active');
+      selectMobileQuestion(currentPage);
+    }
+
+    function exitMobileMode() {
+      document.body.classList.remove('mobile-mode-active');
+      renderCurrentSlide();
+    }
+
+    if (syncChannel) {
+      syncChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'SYNC_STATE') {
+          wordState = event.data.payload;
+          localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(wordState));
+          renderCurrentSlide();
+        }
+      };
+    }
+
+    let fbInterval = null;
+    async function pushToFirebase() {
+      if (!appConfig.firebaseUrl) return;
+      try {
+        await fetch(`${appConfig.firebaseUrl}/proscons_session.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            wordState: wordState,
+            config: {
+              colA: appConfig.colA,
+              colB: appConfig.colB,
+              questions: appConfig.questions
+            }
+          })
+        });
+      } catch (e) {
+        console.warn('Firebase sync error:', e);
+      }
+    }
+
+    function startFirebasePolling() {
+      if (!appConfig.firebaseUrl) return;
+      document.getElementById('syncStatusText').textContent = 'Cloud Phone Sync Active';
+      if (fbInterval) clearInterval(fbInterval);
+      fbInterval = setInterval(async () => {
+        try {
+          const res = await fetch(`${appConfig.firebaseUrl}/proscons_session.json`);
+          const data = await res.json();
+          if (data) {
+            if (data.wordState) {
+              wordState = data.wordState;
+              renderCurrentSlide();
+            }
+            if (data.config && data.config.questions) {
+              appConfig.colA = data.config.colA || appConfig.colA;
+              appConfig.colB = data.config.colB || appConfig.colB;
+              appConfig.questions = data.config.questions;
+              selectMobileQuestion(mobileQuestionIndex);
+            }
+          }
+        } catch (e) {}
+      }, 2000);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    // ====================================================
+    // INITIALIZE ON LOAD
+    // ====================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('fb')) {
+        appConfig.firebaseUrl = params.get('fb').replace(/\/$/, '');
+        localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(appConfig));
+      }
+      if (params.get('mode') === 'mobile') {
+        document.body.classList.add('mobile-mode-active');
+      }
+
+      renderCurrentSlide();
+      selectMobileQuestion(0);
+
+      if (appConfig.firebaseUrl) {
+        startFirebasePolling();
+      }
+    });
+  </script>
+</body>
+</html>
