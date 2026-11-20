@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCH OGSM 2027 - Workshop & Linkage Summary</title>
+  <!-- Mars Geometric Fonts: Montserrat (Marselis Display Fallback) & Plus Jakarta Sans (Centra No2 Fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-display: 'Marselis', 'Montserrat', 'Arial Black', sans-serif;
+      --font-sans: 'Centra No2', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+      --mars-royal: #0000a0;
+      --mars-navy-dark: #060738;
+      --mars-navy-card: #0d105a;
+      --mars-border: #252b94;
+      --mars-gold: #ffdc00;
+      --mars-cyan: #00c8ff;
+      --text-main: #ffffff;
+      --text-muted: #b8c0f5;
+
+      --pros-color: #00d7b9;
+      --pros-bg: rgba(0, 215, 185, 0.09);
+      --pros-border: rgba(0, 215, 185, 0.45);
+
+      --cons-color: #ff4b64;
+      --cons-bg: rgba(255, 50, 80, 0.09);
+      --cons-border: rgba(255, 75, 100, 0.45);
+
+      --gold-color: #ffdc00;
+      --gold-bg: rgba(255, 220, 0, 0.09);
+      --gold-border: rgba(255, 220, 0, 0.45);
+
+      --header-height: 64px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-sans); }
+
+    body {
+      background: radial-gradient(circle at top right, #0f1682 0%, var(--mars-navy-dark) 68%);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.mobile-mode-active {
+      overflow-y: auto;
+      height: auto;
+      min-height: 100vh;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      height: var(--header-height);
+      background: linear-gradient(90deg, #050630 0%, #0000a0 55%, #070a4a 100%);
+      border-bottom: 3px solid var(--mars-gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 12px;
+      box-shadow: 0 6px 22px rgba(0, 0, 75, 0.6);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff 0%, var(--mars-gold) 58%, var(--pros-color) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+
+    .status-badge {
+      font-size: 0.72rem;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: rgba(0, 215, 185, 0.16);
+      color: var(--pros-color);
+      border: 1px solid rgba(0, 215, 185, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--pros-color); animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    /* WORKSHOP STEP NAV PILLS */
+    .workshop-nav {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(6, 7, 56, 0.78);
+      padding: 4px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--mars-border);
+    }
+
+    .nav-step-btn {
+      font-family: var(--font-display);
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .nav-step-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
+    .nav-step-btn.active {
+      background: var(--mars-gold);
+      color: #000066;
+      box-shadow: 0 2px 10px rgba(255, 220, 0, 0.45);
+    }
+
+    .controls { display: flex; align-items: center; gap: 8px; }
+    .btn {
+      font-family: var(--font-sans);
+      background: rgba(13, 16, 90, 0.92);
+      color: var(--text-main);
+      border: 1px solid var(--mars-border);
+      padding: 7px 12px;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .btn:hover { background: #1a2299; border-color: var(--mars-cyan); }
+    .btn-primary {
+      font-family: var(--font-display);
+      background: linear-gradient(135deg, var(--mars-gold), #ffae00);
+      color: #000066;
+      border-color: transparent;
+      font-weight: 800;
+    }
+
+    /* MAIN CONTAINER */
+    .main-viewport {
+      height: calc(100vh - var(--header-height));
+      padding: 12px 18px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* HEADER BANNER */
+    .header-banner {
+      background: linear-gradient(135deg, rgba(0, 0, 160, 0.88), rgba(10, 14, 78, 0.96));
+      border: 1px solid var(--mars-border);
+      border-left: 6px solid var(--mars-gold);
+      border-radius: 12px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .step-tag {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mars-gold);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    /* SUB-TABS (STEP 1 PILLARS) */
+    .pillar-subtabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .pillar-tab-btn {
+      font-family: var(--font-display);
+      background: rgba(6, 7, 56, 0.7);
+      border: 1px solid var(--mars-border);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .pillar-tab-btn.active {
+      background: var(--mars-cyan);
+      color: #000066;
+      border-color: transparent;
+    }
+
+    /* WORKSPACE GRIDS */
+    .step-view { flex: 1; display: none; min-height: 0; }
+    .step-view.active { display: flex; flex-direction: column; gap: 10px; }
+
+    .split-2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 0; }
+    .split-3 { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; min-height: 0; }
+    .summary-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr 1.15fr; gap: 12px; min-height: 0; }
+
+    .panel-card {
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+      background: rgba(13, 16, 90, 0.45);
+      border: 1.5px solid var(--mars-border);
+    }
+    .panel-card.pros-theme { background: var(--pros-bg); border-color: var(--pros-border); }
+    .panel-card.cons-theme { background: var(--cons-bg); border-color: var(--cons-border); }
+    .panel-card.gold-theme { background: var(--gold-bg); border-color: var(--gold-border); }
+
+    .panel-header {
+      font-family: var(--font-display);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .pros-theme .panel-header { background: rgba(0, 215, 185, 0.18); border-bottom: 1px solid var(--pros-border); color: var(--pros-color); }
+    .cons-theme .panel-header { background: rgba(255, 50, 80, 0.18); border-bottom: 1px solid var(--cons-border); color: var(--cons-color); }
+    .gold-theme .panel-header { background: rgba(255, 220, 0, 0.18); border-bottom: 1px solid var(--gold-border); color: var(--gold-color); }
+
+    .panel-body {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      gap: 10px 14px;
+      overflow-y: auto;
+    }
+
+    .word-tag {
+      font-family: var(--font-display);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      line-height: 1.15;
+      background: rgba(6, 7, 56, 0.85);
+      border: 1.5px solid;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .word-tag.highlighted {
+      box-shadow: 0 0 16px var(--mars-gold) !important;
+      border-color: var(--mars-gold) !important;
+      transform: scale(1.08) !important;
+    }
+
+    .word-count-sup {
+      font-family: var(--font-sans);
+      font-size: 0.6em;
+      font-weight: 800;
+      background: rgba(0, 0, 50, 0.6);
+      padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    /* ==========================================
+       CURATE & CHAIN EXECUTIVE STORYLINE RIBBON
+       ========================================== */
+    .curate-ribbon {
+      background: linear-gradient(135deg, rgba(8, 11, 62, 0.95), rgba(15, 20, 95, 0.95));
+      border: 2px solid var(--mars-gold);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(255, 220, 0, 0.25);
+      flex-shrink: 0;
+    }
+
+    .ribbon-controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ribbon-title-badge {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: var(--mars-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chain-flow-track {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chain-card-slot {
+      background: rgba(6, 7, 56, 0.88);
+      border: 1.5px solid var(--mars-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      min-height: 58px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .chain-card-slot.slot-past { border-left: 4px solid var(--pros-color); }
+    .chain-card-slot.slot-miss { border-left: 4px solid var(--cons-color); }
+    .chain-card-slot.slot-future { border-left: 4px solid var(--mars-cyan); }
+    .chain-card-slot.slot-commit { border-left: 4px solid var(--mars-gold); }
+
+    .slot-meta {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .slot-text {
+      font-weight: 800;
+      font-size: 0.84rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chain-vector-arrow {
+      font-family: var(--font-display);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--mars-gold);
+      font-weight: 900;
+      user-select: none;
+      padding: 0 4px;
+    }
+    .chain-vector-arrow .arrow-glyph {
+      font-size: 1.25rem;
+      line-height: 1;
+      text-shadow: 0 0 8px rgba(255, 220, 0, 0.7);
+    }
+    .chain-vector-arrow .arrow-lbl {
+      font-size: 0.58rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* NEGATIVE IMPACT BADGES */
+    .impact-pill {
+      font-family: var(--font-display);
+      font-size: 0.62rem;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .impact-oee { background: rgba(255, 75, 100, 0.22); color: #ff6b81; border: 1px solid rgba(255, 75, 100, 0.5); }
+    .impact-cost { background: rgba(255, 120, 50, 0.22); color: #ffa600; border: 1px solid rgba(255, 120, 50, 0.5); }
+    .impact-capability { background: rgba(155, 81, 224, 0.22); color: #c48bf5; border: 1px solid rgba(155, 81, 224, 0.5); }
+    .impact-critical { background: #ff3250; color: #fff; font-weight: 900; animation: hazardPulse 1.8s infinite; }
+
+    @keyframes hazardPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.65; }
+    }
+
+    /* SUMMARY PAGE STYLES */
+    .summary-column {
+      background: rgba(13, 16, 90, 0.55);
+      border: 1.5px solid var(--mars-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .summary-col-header {
+      font-family: var(--font-display);
+      padding: 9px 12px;
+      font-size: 0.84rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      background: rgba(6, 7, 56, 0.85);
+      border-bottom: 2px solid var(--mars-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .summary-col-header.past { border-color: var(--pros-color); color: var(--pros-color); }
+    .summary-col-header.learnings { border-color: var(--cons-color); color: var(--cons-color); }
+    .summary-col-header.future { border-color: var(--mars-cyan); color: var(--mars-cyan); }
+    .summary-col-header.commitment { border-color: var(--mars-gold); color: var(--mars-gold); }
+
+    .summary-content-stack {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-sub-card {
+      background: rgba(6, 7, 56, 0.7);
+      border: 1px solid var(--mars-border);
+      border-radius: 8px;
+      padding: 7px 9px;
+    }
+    .summary-sub-title {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ranked-list { display: flex; flex-direction: column; gap: 5px; }
+    .ranked-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(13, 16, 90, 0.8);
+      border: 1px solid rgba(37, 43, 148, 0.6);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .ranked-item:hover, .ranked-item.in-chain {
+      border-color: var(--mars-gold);
+      box-shadow: 0 0 10px rgba(255, 220, 0, 0.45);
+      background: rgba(20, 26, 128, 0.95);
+    }
+    .pillar-badge {
+      font-size: 0.62rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(0, 200, 255, 0.2);
+      color: var(--mars-cyan);
+      font-weight: 800;
+      margin-right: 6px;
+    }
+
+    /* MOBILE FORM */
+    .mobile-wrapper {
+      display: none;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 14px 60px 14px;
+    }
+    body.mobile-mode-active .top-bar,
+    body.mobile-mode-active .main-viewport { display: none; }
+    body.mobile-mode-active .mobile-wrapper { display: block; }
+
+    .m-step-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .m-step-btn {
+      font-family: var(--font-display);
+      background: var(--mars-navy-card);
+      border: 1px solid var(--mars-border);
+      color: var(--text-muted);
+      padding: 10px 4px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.76rem;
+      text-align: center;
+      cursor: pointer;
+    }
+    .m-step-btn.active { background: var(--mars-gold); color: #000066; border-color: transparent; }
+
+    .m-card {
+      background: linear-gradient(160deg, var(--mars-navy-card), #080a42);
+      border: 1px solid var(--mars-border);
+      border-top: 4px solid var(--mars-gold);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .input-box-group {
+      margin-bottom: 14px;
+      padding: 10px;
+      border-radius: 8px;
+      background: rgba(6, 7, 56, 0.65);
+      border: 1px solid var(--mars-border);
+    }
+    .input-box-group label {
+      font-family: var(--font-display);
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .input-box-group input {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 6px;
+      border: 1px solid var(--mars-border);
+      background: #05062e;
+      color: #fff;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      outline: none;
+    }
+
+    .submit-btn {
+      font-family: var(--font-display);
+      width: 100%;
+      padding: 12px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, var(--mars-gold), #ffae00);
+      color: #000066;
+      cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(3, 4, 32, 0.85);
+      backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: var(--mars-navy-card); border: 1px solid var(--mars-border);
+      border-top: 4px solid var(--mars-gold); border-radius: 12px; max-width: 520px; width: 100%; padding: 20px;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
+    .qr-box { background: white; padding: 14px; border-radius: 10px; display: inline-block; margin: 10px auto; }
+    .url-box { background: #05062e; padding: 8px; border-radius: 6px; font-family: monospace; font-size: 0.76rem; color: var(--mars-gold); word-break: break-all; }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP NAVIGATION BAR
+       ========================================== -->
+  <header class="top-bar">
+    <div class="brand">
+      <h1>PCH OGSM 2027</h1>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span id="syncStatusText">Cloud Live</span>
+      </div>
+    </div>
+
+    <!-- 4 WORKSHOP STAGES -->
+    <nav class="workshop-nav">
+      <button class="nav-step-btn active" id="navStep0" onclick="switchStage(0)">1. Reflect (Past)</button>
+      <span style="color:var(--mars-gold); font-weight:800; font-size:0.8rem;">➔</span>
+      <button class="nav-step-btn" id="navStep1" onclick="switchStage(1)">2. Priorities (Future)</button>
+      <span style="color:var(--mars-gold); font-weight:800; font-size:0.8rem;">➔</span>
+      <button class="nav-step-btn" id="navStep2" onclick="switchStage(2)">3. Commitment</button>
+      <span style="color:var(--mars-gold); font-weight:800; font-size:0.8rem;">➔</span>
+      <button class="nav-step-btn" id="navStep3" onclick="switchStage(3)">📊 4. Summary Linkage</button>
+    </nav>
+
+    <div class="controls">
+      <button class="btn btn-primary" onclick="openModal('qrModal')">📱 Show QR Code</button>
+      <button class="btn" onclick="toggleMobilePreview()">📲 Phone Form</button>
+      <button class="btn" onclick="seedWorkshopDemo()">✨ Demo Fill</button>
+      <button class="btn" onclick="openModal('setupModal')">⚙️ Firebase Sync</button>
+      <button class="btn" style="color:#ff8597;" onclick="resetAllData()">🗑️ Reset</button>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MAIN WORKSHOP SCREENS
+       ========================================== -->
+  <main class="main-viewport">
+
+    <!-- STAGE 1: REFLECT (5 PILLARS: WHY WE WON VS WHY WE MISSED) -->
+    <section class="step-view active" id="viewStage0">
+      <div class="header-banner">
+        <div>
+          <span class="step-tag">STEP 1 OF 3 • REFLECT ON LAST YEAR (PAST → LEARNINGS)</span>
+          <h2 class="step-title">Why did we win? Why did we miss?</h2>
+          <div class="pillar-subtabs">
+            <button class="pillar-tab-btn active" id="pTab0" onclick="selectPillar(0)">1. People</button>
+            <button class="pillar-tab-btn" id="pTab1" onclick="selectPillar(1)">2. Standards & Systems</button>
+            <button class="pillar-tab-btn" id="pTab2" onclick="selectPillar(2)">3. Equipment</button>
+            <button class="pillar-tab-btn" id="pTab3" onclick="selectPillar(3)">4. Resources</button>
+            <button class="pillar-tab-btn" id="pTab4" onclick="selectPillar(4)">5. Behaviors</button>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">ACTIVE PILLAR</span>
+          <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:900; color:var(--mars-gold);" id="activePillarLabel">1. People</div>
+        </div>
+      </div>
+
+      <div class="split-2">
+        <div class="panel-card pros-theme">
+          <div class="panel-header">
+            <span>🏆 WHY WE WON — <span class="pillar-name-hdr">PEOPLE</span></span>
+            <span id="pWonCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudPillarWon"></div>
+        </div>
+        <div class="panel-card cons-theme">
+          <div class="panel-header">
+            <span>🎯 WHY WE MISSED — <span class="pillar-name-hdr">PEOPLE</span></span>
+            <span id="pMissedCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudPillarMissed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 2: SITE PRIORITIES (RISKS VS ENABLERS) -->
+    <section class="step-view" id="viewStage1">
+      <div class="header-banner">
+        <div>
+          <span class="step-tag">STEP 2 OF 3 • NEXT YEAR'S SITE PRIORITIES (FUTURE)</span>
+          <h2 class="step-title">What opportunities and risks do you see?</h2>
+        </div>
+        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">
+          Feeds into Future Column
+        </div>
+      </div>
+
+      <div class="split-2">
+        <div class="panel-card cons-theme">
+          <div class="panel-header">
+            <span>⚠️ RISKS / CHALLENGES</span>
+            <span id="pRisksCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudStageRisks"></div>
+        </div>
+        <div class="panel-card pros-theme">
+          <div class="panel-header">
+            <span>🚀 ENABLERS / OPPORTUNITIES</span>
+            <span id="pEnablersCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudStageEnablers"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 3: COMMITMENT (START / STOP / CONTINUE) -->
+    <section class="step-view" id="viewStage2">
+      <div class="header-banner">
+        <div>
+          <span class="step-tag">STEP 3 OF 3 • TRANSLATE INTO COMMITMENT (OWNERSHIP)</span>
+          <h2 class="step-title">What must line managers do differently next year?</h2>
+        </div>
+        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">
+          Feeds into Commitment Column
+        </div>
+      </div>
+
+      <div class="split-3">
+        <div class="panel-card pros-theme">
+          <div class="panel-header">
+            <span>🟢 START DOING</span>
+            <span id="pStartCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudStageStart"></div>
+        </div>
+        <div class="panel-card cons-theme">
+          <div class="panel-header">
+            <span>🔴 STOP DOING</span>
+            <span id="pStopCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudStageStop"></div>
+        </div>
+        <div class="panel-card gold-theme">
+          <div class="panel-header">
+            <span>🟡 CONTINUE DOING</span>
+            <span id="pContinueCount">0 words</span>
+          </div>
+          <div class="panel-body" id="cloudStageContinue"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 4: END-TO-END SUMMARY LINKAGE BOARD WITH "CURATE & CHAIN" MODE -->
+    <section class="step-view" id="viewStage3">
+      <!-- Pinned Executive Storyline Ribbon -->
+      <div class="curate-ribbon">
+        <div class="ribbon-controls-bar">
+          <div class="ribbon-title-badge">
+            <span>🔗 CURATE & CHAIN STORYLINE:</span>
+            <select id="chainPresetSelect" onchange="loadPresetChain(this.value)" style="background:#05062e; color:var(--mars-gold); border:1px solid var(--mars-border); border-radius:5px; padding:3px 8px; font-weight:800; font-size:0.75rem;">
+              <option value="preset_rel">Storyline A: Asset Reliability & Downtime</option>
+              <option value="preset_peo">Storyline B: People, Shift Handover & Escalation</option>
+              <option value="custom">Custom Live Chain</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Click items below to link</span>
+            <button class="btn" style="padding:4px 8px; font-size:0.72rem;" onclick="clearActiveChain()">❌ Clear Chain</button>
+          </div>
+        </div>
+
+        <div class="chain-flow-track" id="chainTrackDisplay">
+          <!-- Dynamically populated 4 slots + 3 leading indicator arrows -->
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 2px;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span style="font-size:0.74rem; color:var(--text-muted); font-weight:800;">FILTER PILLAR:</span>
+          <button class="pillar-tab-btn active" id="sumFilterAll" onclick="setSummaryFilter('all')">All</button>
+          <button class="pillar-tab-btn" id="sumFilter0" onclick="setSummaryFilter(0)">People</button>
+          <button class="pillar-tab-btn" id="sumFilter1" onclick="setSummaryFilter(1)">Standards</button>
+          <button class="pillar-tab-btn" id="sumFilter2" onclick="setSummaryFilter(2)">Equip</button>
+          <button class="pillar-tab-btn" id="sumFilter3" onclick="setSummaryFilter(3)">Resources</button>
+          <button class="pillar-tab-btn" id="sumFilter4" onclick="setSummaryFilter(4)">Behaviors</button>
+        </div>
+        <div style="font-size:0.74rem; color:var(--text-muted);">
+          Total Submissions: <strong style="color:#fff;" id="sumGrandTotal">0</strong>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <!-- 1. PAST -->
+        <div class="summary-column">
+          <div class="summary-col-header past">
+            <span>1. PAST (Why We Won)</span>
+            <span id="sumWonCount">0</span>
+          </div>
+          <div class="summary-content-stack" id="sumColPast"></div>
+        </div>
+
+        <!-- 2. LEARNINGS -->
+        <div class="summary-column">
+          <div class="summary-col-header learnings">
+            <span>2. LEARNINGS (Why We Missed)</span>
+            <span id="sumMissedCount">0</span>
+          </div>
+          <div class="summary-content-stack" id="sumColLearnings"></div>
+        </div>
+
+        <!-- 3. FUTURE -->
+        <div class="summary-column">
+          <div class="summary-col-header future">
+            <span>3. FUTURE (Site Priorities)</span>
+            <span id="sumFutureCount">0</span>
+          </div>
+          <div class="summary-content-stack">
+            <div class="summary-sub-card">
+              <div class="summary-sub-title" style="color:var(--pros-color);">🚀 TOP ENABLERS</div>
+              <div class="ranked-list" id="sumListEnablers"></div>
+            </div>
+            <div class="summary-sub-card">
+              <div class="summary-sub-title" style="color:var(--cons-color);">⚠️ TOP RISKS (HEADWINDS)</div>
+              <div class="ranked-list" id="sumListRisks"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. COMMITMENT -->
+        <div class="summary-column">
+          <div class="summary-col-header commitment">
+            <span>4. COMMITMENT (Ownership)</span>
+            <span id="sumCommitCount">0</span>
+          </div>
+          <div class="summary-content-stack">
+            <div class="summary-sub-card">
+              <div class="summary-sub-title" style="color:var(--pros-color);">🟢 START</div>
+              <div class="ranked-list" id="sumListStart"></div>
+            </div>
+            <div class="summary-sub-card">
+              <div class="summary-sub-title" style="color:var(--cons-color);">🔴 STOP</div>
+              <div class="ranked-list" id="sumListStop"></div>
+            </div>
+            <div class="summary-sub-card">
+              <div class="summary-sub-title" style="color:var(--gold-color);">🟡 CONTINUE</div>
+              <div class="ranked-list" id="sumListContinue"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MOBILE PARTICIPANT EXPERIENCE (1 QR CODE)
+       ========================================== -->
+  <section class="mobile-wrapper" id="mobileWrapper">
+    <div style="text-align:center; margin-bottom:14px;">
+      <h2 style="font-family:var(--font-display); font-size:1.35rem; color:var(--mars-gold); text-transform:uppercase;">PCH OGSM 2027</h2>
+      <p style="font-size:0.82rem; color:var(--text-muted);">Participant Submission Form</p>
+    </div>
+
+    <!-- Mobile 3-Step Switcher -->
+    <div class="m-step-tabs">
+      <button class="m-step-btn active" id="mStepBtn0" onclick="setMobileStep(0)">1. Reflect</button>
+      <button class="m-step-btn" id="mStepBtn1" onclick="setMobileStep(1)">2. Priorities</button>
+      <button class="m-step-btn" id="mStepBtn2" onclick="setMobileStep(2)">3. Commitment</button>
+    </div>
+
+    <!-- Mobile Step 1 Form -->
+    <div class="m-card" id="mCardStep0">
+      <div style="font-size:0.75rem; font-weight:800; color:var(--mars-gold); margin-bottom:4px;">STEP 1: REFLECT ON LAST YEAR</div>
+      <label style="font-size:0.76rem; color:var(--text-muted); display:block; margin-bottom:4px; font-weight:700;">Select Framework Pillar:</label>
+      <select id="mPillarSelect" onchange="renderMobileStep1Pillar()" style="width:100%; padding:8px; border-radius:6px; background:#05062e; color:#fff; border:1px solid var(--mars-border); margin-bottom:12px; font-weight:700;">
+        <option value="0">1. People</option>
+        <option value="1">2. Standards & Systems</option>
+        <option value="2">3. Equipment</option>
+        <option value="3">4. Resources</option>
+        <option value="4">5. Behaviors</option>
+      </select>
+
+      <div class="input-box-group" style="border-color:var(--pros-border);">
+        <label style="color:var(--pros-color);">🏆 Why did we win? (Up to 3)</label>
+        <input type="text" id="mWon1" placeholder="Win 1" />
+        <input type="text" id="mWon2" placeholder="Win 2 (optional)" />
+        <input type="text" id="mWon3" placeholder="Win 3 (optional)" />
+      </div>
+
+      <div class="input-box-group" style="border-color:var(--cons-border);">
+        <label style="color:var(--cons-color);">🎯 Why did we miss? (Up to 3)</label>
+        <input type="text" id="mMiss1" placeholder="Miss 1" />
+        <input type="text" id="mMiss2" placeholder="Miss 2 (optional)" />
+        <input type="text" id="mMiss3" placeholder="Miss 3 (optional)" />
+      </div>
+
+      <button class="submit-btn" onclick="submitMobileStep1()">🚀 Submit Pillar & Next</button>
+    </div>
+
+    <!-- Mobile Step 2 Form -->
+    <div class="m-card" id="mCardStep1" style="display:none;">
+      <div style="font-size:0.75rem; font-weight:800; color:var(--mars-gold); margin-bottom:4px;">STEP 2: NEXT YEAR'S SITE PRIORITIES</div>
+      <div style="font-size:0.92rem; font-weight:800; margin-bottom:12px;">What opportunities and risks do you see?</div>
+
+      <div class="input-box-group" style="border-color:var(--cons-border);">
+        <label style="color:var(--cons-color);">⚠️ Risks / Challenges (Up to 3)</label>
+        <input type="text" id="mRisk1" placeholder="Risk 1" />
+        <input type="text" id="mRisk2" placeholder="Risk 2 (optional)" />
+        <input type="text" id="mRisk3" placeholder="Risk 3 (optional)" />
+      </div>
+
+      <div class="input-box-group" style="border-color:var(--pros-border);">
+        <label style="color:var(--pros-color);">🚀 Enablers / Opportunities (Up to 3)</label>
+        <input type="text" id="mEnabler1" placeholder="Enabler 1" />
+        <input type="text" id="mEnabler2" placeholder="Enabler 2 (optional)" />
+        <input type="text" id="mEnabler3" placeholder="Enabler 3 (optional)" />
+      </div>
+
+      <button class="submit-btn" onclick="submitMobileStep2()">🚀 Submit Priorities & Go to Step 3</button>
+    </div>
+
+    <!-- Mobile Step 3 Form -->
+    <div class="m-card" id="mCardStep2" style="display:none;">
+      <div style="font-size:0.75rem; font-weight:800; color:var(--mars-gold); margin-bottom:4px;">STEP 3: TRANSLATE INTO COMMITMENT</div>
+      <div style="font-size:0.92rem; font-weight:800; margin-bottom:12px;">What must line managers do differently next year?</div>
+
+      <div class="input-box-group" style="border-color:var(--pros-border);">
+        <label style="color:var(--pros-color);">🟢 START DOING (Up to 3)</label>
+        <input type="text" id="mStart1" placeholder="Start 1" />
+        <input type="text" id="mStart2" placeholder="Start 2 (optional)" />
+        <input type="text" id="mStart3" placeholder="Start 3 (optional)" />
+      </div>
+
+      <div class="input-box-group" style="border-color:var(--cons-border);">
+        <label style="color:var(--cons-color);">🔴 STOP DOING (Up to 3)</label>
+        <input type="text" id="mStop1" placeholder="Stop 1" />
+        <input type="text" id="mStop2" placeholder="Stop 2 (optional)" />
+        <input type="text" id="mStop3" placeholder="Stop 3 (optional)" />
+      </div>
+
+      <div class="input-box-group" style="border-color:var(--gold-border);">
+        <label style="color:var(--gold-color);">🟡 CONTINUE DOING (Up to 3)</label>
+        <input type="text" id="mContinue1" placeholder="Continue 1" />
+        <input type="text" id="mContinue2" placeholder="Continue 2 (optional)" />
+        <input type="text" id="mContinue3" placeholder="Continue 3 (optional)" />
+      </div>
+
+      <button class="submit-btn" onclick="submitMobileStep3()">🎉 Submit Commitments</button>
+    </div>
+
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn" onclick="exitMobileMode()">🖥️ Return to Desktop Display</button>
+    </div>
+  </section>
+
+  <!-- QR CODE MODAL -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-card" style="text-align:center;">
+      <div class="modal-header">
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; color:#fff;">📱 Scan to Participate</h3>
+        <button class="close-btn" onclick="closeModal('qrModal')">&times;</button>
+      </div>
+      <p style="font-size:0.84rem; color:var(--text-muted);">Scan to submit words across Step 1, Step 2, and Step 3</p>
+      <div class="qr-box">
+        <img id="qrImage" src="" alt="QR Code" width="210" height="210" />
+      </div>
+      <div class="url-box" id="mobileUrlDisplay"></div>
+    </div>
+  </div>
+
+  <!-- SETUP MODAL (FIREBASE) -->
+  <div class="modal-overlay" id="setupModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; color:#fff;">⚙️ Cloud Real-Time Sync Setup</h3>
+        <button class="close-btn" onclick="closeModal('setupModal')">&times;</button>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">
+        To let phones on cellular data sync directly to your desktop, paste your free Firebase Realtime Database URL:
+      </p>
+      <input type="text" id="cfgFirebaseUrl" placeholder="https://your-project-default-rtdb.firebaseio.com" style="width:100%; padding:9px; border-radius:6px; background:#05062e; color:#fff; border:1px solid var(--mars-border); font-size:0.85rem;" />
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button class="btn" onclick="closeModal('setupModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveFirebaseConfig()">💾 Save & Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====================================================
+    // DATA STRUCTURE & STATE
+    // ====================================================
+    const STORAGE_KEY = 'pch_ogsm_2027_v5_data';
+    const CFG_KEY = 'pch_ogsm_2027_v5_cfg';
+
+    const PILLARS = [
+      'People',
+      'Standards & Systems',
+      'Equipment',
+      'Resources',
+      'Behaviors'
+    ];
+
+    const PALETTE_WON = ['#00d7b9', '#2ee59d', '#00c8ff', '#70f5d9', '#5ce1e6'];
+    const PALETTE_MISSED = ['#ff4b64', '#ff7832', '#ffdc00', '#ff8597', '#ffa600'];
+    const PALETTE_GOLD = ['#ffdc00', '#ffd000', '#ffe853', '#00c8ff'];
+
+    function createFreshState() {
+      return {
+        step1: Array.from({ length: 5 }, () => ({ won: {}, missed: {} })),
+        step2: { risks: {}, enablers: {} },
+        step3: { start: {}, stop: {}, continue: {} }
+      };
+    }
+
+    let state = loadState();
+    let firebaseUrl = localStorage.getItem(CFG_KEY) || '';
+    let currentStage = 0;   // 0: Reflect, 1: Priorities, 2: Commitment, 3: Summary
+    let currentPillar = 0;  // 0 to 4 inside Stage 1
+    let summaryFilter = 'all';
+
+    // Active Curate & Chain State (4 slots)
+    let activeChain = {
+      past: { word: 'PM Execution Discipline', pillar: 'Equip', count: 6 },
+      miss: { word: 'Late Escalation on Stops', pillar: 'Behav', count: 7, impact: 'OEE DRAG', sev: 'CRITICAL' },
+      future: { word: 'Line Downtime Risk', pillar: 'Risk', count: 8, impact: 'COST LEAK', sev: 'HIGH' },
+      commit: { word: 'Daily Gemba Coaching', pillar: 'Start', count: 6 }
+    };
+
+    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('pch_ogsm_2027_ch') : null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return createFreshState();
+        const p = JSON.parse(raw);
+        if (!p.step1 || !p.step2 || !p.step3) return createFreshState();
+        return p;
+      } catch (e) {
+        return createFreshState();
+      }
+    }
+
+    function saveState(broadcast = true) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      if (broadcast && syncChannel) {
+        syncChannel.postMessage({ type: 'STATE_SYNC', payload: state });
+      }
+      if (broadcast && firebaseUrl) {
+        pushToFirebase();
+      }
+    }
+
+    // ====================================================
+    // STAGE NAVIGATION
+    // ====================================================
+    function switchStage(stageIdx) {
+      currentStage = stageIdx;
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`navStep${i}`).classList.toggle('active', i === stageIdx);
+        document.getElementById(`viewStage${i}`).classList.toggle('active', i === stageIdx);
+      }
+      renderCurrentView();
+    }
+
+    function selectPillar(pIdx) {
+      currentPillar = pIdx;
+      for (let i = 0; i < 5; i++) {
+        document.getElementById(`pTab${i}`).classList.toggle('active', i === pIdx);
+      }
+      document.getElementById('activePillarLabel').textContent = `${pIdx + 1}. ${PILLARS[pIdx]}`;
+      document.querySelectorAll('.pillar-name-hdr').forEach(el => el.textContent = PILLARS[pIdx].toUpperCase());
+      renderStage0();
+    }
+
+    function renderCurrentView() {
+      if (currentStage === 0) renderStage0();
+      else if (currentStage === 1) renderStage1();
+      else if (currentStage === 2) renderStage2();
+      else if (currentStage === 3) renderStage3();
+    }
+
+    // Word font sizing
+    function computeSize(count, max) {
+      const base = 1.05;
+      const step = Math.min(2.2, (count - 1) * 0.48);
+      const spread = max > 1 ? ((count - 1) / (max - 1)) * 0.5 : 0;
+      return Math.min(3.6, base + step + spread);
+    }
+
+    function renderBag(containerId, bag, palette, emptyMsg) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const entries = Object.entries(bag || {}).sort((a, b) => b[1] - a[1]);
+      if (entries.length === 0) {
+        container.innerHTML = `<span style="font-size:0.9rem; color:rgba(184,192,245,0.5); font-style:italic;">${emptyMsg}</span>`;
+        return;
+      }
+      const max = Math.max(...entries.map(e => e[1]), 1);
+      container.innerHTML = '';
+      entries.forEach(([word, count], i) => {
+        const span = document.createElement('span');
+        span.className = 'word-tag';
+        const color = palette[i % palette.length];
+        span.style.color = color;
+        span.style.borderColor = `${color}66`;
+        span.style.fontSize = `${computeSize(count, max).toFixed(2)}rem`;
+        span.innerHTML = `${escapeHtml(word)} ${count > 1 ? `<span class="word-count-sup">${count}</span>` : ''}`;
+        container.appendChild(span);
+      });
+    }
+
+    function renderStage0() {
+      const pData = state.step1[currentPillar] || { won: {}, missed: {} };
+      const wonEntries = Object.values(pData.won).reduce((a, b) => a + b, 0);
+      const missedEntries = Object.values(pData.missed).reduce((a, b) => a + b, 0);
+      document.getElementById('pWonCount').textContent = `${wonEntries} entries`;
+      document.getElementById('pMissedCount').textContent = `${missedEntries} entries`;
+
+      renderBag('cloudPillarWon', pData.won, PALETTE_WON, 'No wins submitted for this pillar yet');
+      renderBag('cloudPillarMissed', pData.missed, PALETTE_MISSED, 'No misses submitted for this pillar yet');
+    }
+
+    function renderStage1() {
+      const risks = state.step2.risks || {};
+      const enablers = state.step2.enablers || {};
+      document.getElementById('pRisksCount').textContent = `${Object.values(risks).reduce((a, b) => a + b, 0)} entries`;
+      document.getElementById('pEnablersCount').textContent = `${Object.values(enablers).reduce((a, b) => a + b, 0)} entries`;
+
+      renderBag('cloudStageRisks', risks, PALETTE_MISSED, 'No risks submitted yet');
+      renderBag('cloudStageEnablers', enablers, PALETTE_WON, 'No enablers submitted yet');
+    }
+
+    function renderStage2() {
+      const s = state.step3 || { start: {}, stop: {}, continue: {} };
+      document.getElementById('pStartCount').textContent = `${Object.values(s.start || {}).reduce((a, b) => a + b, 0)} entries`;
+      document.getElementById('pStopCount').textContent = `${Object.values(s.stop || {}).reduce((a, b) => a + b, 0)} entries`;
+      document.getElementById('pContinueCount').textContent = `${Object.values(s.continue || {}).reduce((a, b) => a + b, 0)} entries`;
+
+      renderBag('cloudStageStart', s.start, PALETTE_WON, 'No start behaviors yet');
+      renderBag('cloudStageStop', s.stop, PALETTE_MISSED, 'No stop behaviors yet');
+      renderBag('cloudStageContinue', s.continue, PALETTE_GOLD, 'No continue behaviors yet');
+    }
+
+    // ====================================================
+    // STAGE 4: SUMMARY & "CURATE & CHAIN" LOGIC
+    // ====================================================
+    function setSummaryFilter(f) {
+      summaryFilter = f;
+      document.querySelectorAll('#viewStage3 .pillar-tab-btn').forEach(b => b.classList.remove('active'));
+      if (f === 'all') document.getElementById('sumFilterAll').classList.add('active');
+      else document.getElementById(`sumFilter${f}`).classList.add('active');
+      renderStage3();
+    }
+
+    function detectNegativeImpact(word, count) {
+      const lower = word.toLowerCase();
+      let type = 'OEE DRAG';
+      let cls = 'impact-oee';
+      if (lower.includes('cost') || lower.includes('overtime') || lower.includes('budget') || lower.includes('scrap') || lower.includes('waste')) {
+        type = 'COST LEAK'; cls = 'impact-cost';
+      } else if (lower.includes('turnover') || lower.includes('skill') || lower.includes('onboard') || lower.includes('morale')) {
+        type = 'CAPABILITY DRAIN'; cls = 'impact-capability';
+      }
+      const isCritical = count >= 5;
+      return { type, cls, isCritical };
+    }
+
+    function renderStage3() {
+      renderCurateRibbon();
+
+      const colPast = document.getElementById('sumColPast');
+      const colLearnings = document.getElementById('sumColLearnings');
+      colPast.innerHTML = '';
+      colLearnings.innerHTML = '';
+
+      let totalWon = 0;
+      let totalMissed = 0;
+
+      PILLARS.forEach((pillarName, pIdx) => {
+        if (summaryFilter !== 'all' && summaryFilter !== pIdx) return;
+        const pData = state.step1[pIdx];
+        const wonEntries = Object.entries(pData.won || {}).sort((a, b) => b[1] - a[1]);
+        const missedEntries = Object.entries(pData.missed || {}).sort((a, b) => b[1] - a[1]);
+
+        totalWon += wonEntries.reduce((acc, curr) => acc + curr[1], 0);
+        totalMissed += missedEntries.reduce((acc, curr) => acc + curr[1], 0);
+
+        if (wonEntries.length > 0) {
+          const card = document.createElement('div');
+          card.className = 'summary-sub-card';
+          card.innerHTML = `<div class="summary-sub-title"><span class="pillar-badge">${pillarName}</span> <span>${wonEntries.length} wins</span></div>`;
+          const list = document.createElement('div');
+          list.className = 'ranked-list';
+          wonEntries.slice(0, 5).forEach(([w, c]) => {
+            const inChain = activeChain.past && activeChain.past.word.toLowerCase() === w.toLowerCase();
+            list.appendChild(createRankedItem(w, c, pillarName, inChain, () => selectChainSlot('past', w, pillarName, c)));
+          });
+          card.appendChild(list);
+          colPast.appendChild(card);
+        }
+
+        if (missedEntries.length > 0) {
+          const card = document.createElement('div');
+          card.className = 'summary-sub-card';
+          card.innerHTML = `<div class="summary-sub-title"><span class="pillar-badge" style="color:var(--cons-color); background:rgba(255,75,100,0.2);">${pillarName}</span> <span>${missedEntries.length} misses</span></div>`;
+          const list = document.createElement('div');
+          list.className = 'ranked-list';
+          missedEntries.slice(0, 5).forEach(([w, c]) => {
+            const inChain = activeChain.miss && activeChain.miss.word.toLowerCase() === w.toLowerCase();
+            const impactInfo = detectNegativeImpact(w, c);
+            list.appendChild(createRankedItem(w, c, pillarName, inChain, () => selectChainSlot('miss', w, pillarName, c), impactInfo));
+          });
+          card.appendChild(list);
+          colLearnings.appendChild(card);
+        }
+      });
+
+      document.getElementById('sumWonCount').textContent = totalWon;
+      document.getElementById('sumMissedCount').textContent = totalMissed;
+
+      // 3. FUTURE
+      renderRankedBox('sumListEnablers', state.step2.enablers, '🚀', 'future');
+      renderRankedBox('sumListRisks', state.step2.risks, '⚠️', 'future', true);
+      const enabCount = Object.values(state.step2.enablers || {}).reduce((a, b) => a + b, 0);
+      const riskCount = Object.values(state.step2.risks || {}).reduce((a, b) => a + b, 0);
+      document.getElementById('sumFutureCount').textContent = enabCount + riskCount;
+
+      // 4. COMMITMENT
+      renderRankedBox('sumListStart', state.step3.start, '🟢', 'commit');
+      renderRankedBox('sumListStop', state.step3.stop, '🔴', 'commit');
+      renderRankedBox('sumListContinue', state.step3.continue, '🟡', 'commit');
+      const comCount = Object.values(state.step3.start || {}).reduce((a, b) => a + b, 0) +
+                       Object.values(state.step3.stop || {}).reduce((a, b) => a + b, 0) +
+                       Object.values(state.step3.continue || {}).reduce((a, b) => a + b, 0);
+      document.getElementById('sumCommitCount').textContent = comCount;
+      document.getElementById('sumGrandTotal').textContent = totalWon + totalMissed + enabCount + riskCount + comCount;
+    }
+
+    function renderCurateRibbon() {
+      const track = document.getElementById('chainTrackDisplay');
+      if (!track) return;
+
+      const pSlot = activeChain.past ? `
+        <div class="slot-meta" style="color:var(--pros-color);"><span>1. PAST WIN</span> <span>★ Sustained (${activeChain.past.count || 1})</span></div>
+        <div class="slot-text">${escapeHtml(activeChain.past.word)}</div>
+      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Win below to link</div>`;
+
+      const mSlot = activeChain.miss ? `
+        <div class="slot-meta" style="color:var(--cons-color);">
+          <span>2. ROOT GAP / MISS</span>
+          <span class="impact-pill ${activeChain.miss.impact === 'COST LEAK' ? 'impact-cost' : 'impact-oee'}">🔻 ${activeChain.miss.impact || 'OEE DRAG'}</span>
+        </div>
+        <div class="slot-text">${escapeHtml(activeChain.miss.word)}</div>
+      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Miss below to link</div>`;
+
+      const fSlot = activeChain.future ? `
+        <div class="slot-meta" style="color:var(--mars-cyan);">
+          <span>3. 2027 SITE HEADWIND</span>
+          <span class="impact-pill impact-critical">⚠️ CRITICAL THREAT</span>
+        </div>
+        <div class="slot-text">${escapeHtml(activeChain.future.word)}</div>
+      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Risk/Enabler below</div>`;
+
+      const cSlot = activeChain.commit ? `
+        <div class="slot-meta" style="color:var(--mars-gold);"><span>4. LINE COMMITMENT</span> <span>🟢 COUNTERMEASURE</span></div>
+        <div class="slot-text">${escapeHtml(activeChain.commit.word)}</div>
+      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Commitment below</div>`;
+
+      track.innerHTML = `
+        <div class="chain-card-slot slot-past">${pSlot}</div>
+        <div class="chain-vector-arrow">
+          <span class="arrow-glyph">➔</span>
+          <span class="arrow-lbl">Triggers</span>
+        </div>
+        <div class="chain-card-slot slot-miss">${mSlot}</div>
+        <div class="chain-vector-arrow">
+          <span class="arrow-glyph">➔</span>
+          <span class="arrow-lbl">Predicts</span>
+        </div>
+        <div class="chain-card-slot slot-future">${fSlot}</div>
+        <div class="chain-vector-arrow">
+          <span class="arrow-glyph">➔</span>
+          <span class="arrow-lbl">Neutralize</span>
+        </div>
+        <div class="chain-card-slot slot-commit">${cSlot}</div>
+      `;
+    }
+
+    function selectChainSlot(slotKey, word, pillar, count) {
+      if (activeChain[slotKey] && activeChain[slotKey].word.toLowerCase() === word.toLowerCase()) {
+        activeChain[slotKey] = null; // Toggle off
+      } else {
+        const impact = (slotKey === 'miss' || slotKey === 'future') ? detectNegativeImpact(word, count).type : null;
+        activeChain[slotKey] = { word, pillar, count, impact };
+      }
+      document.getElementById('chainPresetSelect').value = 'custom';
+      renderStage3();
+    }
+
+    function clearActiveChain() {
+      activeChain = { past: null, miss: null, future: null, commit: null };
+      renderStage3();
+    }
+
+    function loadPresetChain(presetKey) {
+      if (presetKey === 'preset_rel') {
+        activeChain = {
+          past: { word: 'PM Execution Discipline', pillar: 'Equip', count: 6 },
+          miss: { word: 'Late Escalation on Stops', pillar: 'Behav', count: 7, impact: 'OEE DRAG' },
+          future: { word: 'Line Downtime Risk', pillar: 'Risk', count: 8, impact: 'COST LEAK' },
+          commit: { word: 'Daily Gemba Coaching', pillar: 'Start', count: 6 }
+        };
+      } else if (presetKey === 'preset_peo') {
+        activeChain = {
+          past: { word: 'Strong Team Alignment', pillar: 'People', count: 5 },
+          miss: { word: 'Shift Handover Gap', pillar: 'People', count: 6, impact: 'CAPABILITY DRAIN' },
+          future: { word: 'High Turnover Risk', pillar: 'Risk', count: 5, impact: 'CAPABILITY DRAIN' },
+          commit: { word: 'Shift Handover Discipline', pillar: 'Continue', count: 5 }
+        };
+      } else {
+        clearActiveChain();
+      }
+      renderStage3();
+    }
+
+    function createRankedItem(word, count, badge = null, inChain = false, onClickHandler = null, impact = null) {
+      const div = document.createElement('div');
+      div.className = `ranked-item ${inChain ? 'in-chain' : ''}`;
+      if (onClickHandler) div.onclick = onClickHandler;
+
+      div.innerHTML = `
+        <span style="display:flex; align-items:center; gap:4px; max-width:76%; overflow:hidden;">
+          <span style="font-size:0.75rem; color:${inChain ? 'var(--mars-gold)' : 'rgba(255,255,255,0.4)'};">${inChain ? '🔘' : '○'}</span>
+          ${badge ? `<span class="pillar-badge">${badge.slice(0, 4)}</span>` : ''}
+          <strong style="color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${escapeHtml(word)}</strong>
+        </span>
+        <span style="display:flex; align-items:center; gap:4px;">
+          ${impact ? `<span class="impact-pill ${impact.cls}">${impact.type.slice(0, 8)}</span>` : ''}
+          ${impact && impact.isCritical ? `<span class="impact-pill impact-critical">🚨</span>` : ''}
+          <span class="word-count-sup">${count}</span>
+        </span>
+      `;
+      return div;
+    }
+
+    function renderRankedBox(containerId, bag, icon, slotKey, isNegative = false) {
+      const c = document.getElementById(containerId);
+      if (!c) return;
+      c.innerHTML = '';
+      const entries = Object.entries(bag || {}).sort((a, b) => b[1] - a[1]);
+      if (entries.length === 0) {
+        c.innerHTML = '<span style="font-size:0.72rem; color:var(--text-muted); font-style:italic;">None yet</span>';
+        return;
+      }
+      entries.slice(0, 5).forEach(([w, count]) => {
+        const inChain = activeChain[slotKey] && activeChain[slotKey].word.toLowerCase() === w.toLowerCase();
+        const impact = isNegative ? detectNegativeImpact(w, count) : null;
+        const item = createRankedItem(`${icon} ${w}`, count, null, inChain, () => selectChainSlot(slotKey, w, slotKey, count), impact);
+        c.appendChild(item);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function addWords(bag, text) {
+      if (!text || !text.trim()) return false;
+      const clean = text.trim().slice(0, 50);
+      const existing = Object.keys(bag).find(k => k.toLowerCase() === clean.toLowerCase());
+      const target = existing || clean;
+      bag[target] = (bag[target] || 0) + 1;
+      return true;
+    }
+
+    // ====================================================
+    // MOBILE SUBMISSION LOGIC
+    // ====================================================
+    let mobileStep = 0;
+    function setMobileStep(step) {
+      mobileStep = step;
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`mStepBtn${i}`).classList.toggle('active', i === step);
+        document.getElementById(`mCardStep${i}`).style.display = (i === step) ? 'block' : 'none';
+      }
+    }
+
+    function renderMobileStep1Pillar() {
+      ['mWon1', 'mWon2', 'mWon3', 'mMiss1', 'mMiss2', 'mMiss3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    }
+
+    function submitMobileStep1() {
+      const pIdx = parseInt(document.getElementById('mPillarSelect').value, 10);
+      const wonVals = [document.getElementById('mWon1').value, document.getElementById('mWon2').value, document.getElementById('mWon3').value];
+      const missVals = [document.getElementById('mMiss1').value, document.getElementById('mMiss2').value, document.getElementById('mMiss3').value];
+
+      let changed = false;
+      wonVals.forEach(v => { if (addWords(state.step1[pIdx].won, v)) changed = true; });
+      missVals.forEach(v => { if (addWords(state.step1[pIdx].missed, v)) changed = true; });
+
+      if (changed) {
+        saveState(true);
+        renderCurrentView();
+        alert(`✅ Submitted for ${PILLARS[pIdx]}!`);
+        if (pIdx < 4) {
+          document.getElementById('mPillarSelect').value = String(pIdx + 1);
+          renderMobileStep1Pillar();
+        } else {
+          setMobileStep(1);
+        }
+      }
+    }
+
+    function submitMobileStep2() {
+      const riskVals = [document.getElementById('mRisk1').value, document.getElementById('mRisk2').value, document.getElementById('mRisk3').value];
+      const enablerVals = [document.getElementById('mEnabler1').value, document.getElementById('mEnabler2').value, document.getElementById('mEnabler3').value];
+
+      let changed = false;
+      riskVals.forEach(v => { if (addWords(state.step2.risks, v)) changed = true; });
+      enablerVals.forEach(v => { if (addWords(state.step2.enablers, v)) changed = true; });
+
+      if (changed) {
+        saveState(true);
+        renderCurrentView();
+        alert('✅ Next Year Priorities submitted!');
+        setMobileStep(2);
+      }
+    }
+
+    function submitMobileStep3() {
+      const startVals = [document.getElementById('mStart1').value, document.getElementById('mStart2').value, document.getElementById('mStart3').value];
+      const stopVals = [document.getElementById('mStop1').value, document.getElementById('mStop2').value, document.getElementById('mStop3').value];
+      const contVals = [document.getElementById('mContinue1').value, document.getElementById('mContinue2').value, document.getElementById('mContinue3').value];
+
+      let changed = false;
+      startVals.forEach(v => { if (addWords(state.step3.start, v)) changed = true; });
+      stopVals.forEach(v => { if (addWords(state.step3.stop, v)) changed = true; });
+      contVals.forEach(v => { if (addWords(state.step3.continue, v)) changed = true; });
+
+      if (changed) {
+        saveState(true);
+        renderCurrentView();
+        alert('🎉 All Commitments submitted! Thank you!');
+      }
+    }
+
+    function toggleMobilePreview() {
+      document.body.classList.add('mobile-mode-active');
+      setMobileStep(currentStage <= 2 ? currentStage : 0);
+    }
+
+    function exitMobileMode() {
+      document.body.classList.remove('mobile-mode-active');
+      renderCurrentView();
+    }
+
+    // ====================================================
+    // DEMO DATA & RESET
+    // ====================================================
+    function seedWorkshopDemo() {
+      state = {
+        step1: [
+          { won: { 'Strong Team Alignment': 5, 'Engagement': 4, 'Cross-training': 3, 'Ownership': 2 }, missed: { 'Shift Handover Gap': 6, 'Turnover Rate': 4, 'Skill Gap': 2 } },
+          { won: { 'Daily Tier Boards': 6, 'Clear SOPs': 4, '5S Audit': 2 }, missed: { 'SOP Deviation': 5, 'Documentation Gap': 3 } },
+          { won: { 'PM Execution Discipline': 6, 'Line Speed': 3, 'New Sensor': 2 }, missed: { 'Line Downtime': 6, 'Spare Parts Delay': 4, 'Wear & Tear': 2 } },
+          { won: { 'Safety Stock Buffer': 4, 'Inventory Control': 3 }, missed: { 'Overtime Cost Leak': 5, 'Budget Limit': 4, 'Lead Time': 2 } },
+          { won: { 'Safety First Culture': 6, 'Zero Harm': 4, 'Peer Praise': 2 }, missed: { 'Late Escalation on Stops': 7, 'Firefighting Alone': 5, 'Silo Mentality': 3 } }
+        ],
+        step2: {
+          risks: { 'Line Downtime Risk': 8, 'Raw Material Delay': 6, 'High Turnover Rate': 5, 'Inflation': 3 },
+          enablers: { 'New Automation': 7, 'Digital Tier Board': 6, 'Safety Leadership': 4, 'Autonomous Care': 3 }
+        },
+        step3: {
+          start: { 'Daily Gemba Coaching': 6, 'Root Cause Follow-up': 5, 'Line-side Feedback': 4 },
+          stop: { 'Firefighting Alone': 5, 'Late Escalation': 4, 'Skipping Handover': 3 },
+          continue: { 'Safety Huddles': 7, 'Shift Handover Discipline': 5, 'Peer Recognition': 4 }
+        }
+      };
+      loadPresetChain('preset_rel');
+      saveState(true);
+      renderCurrentView();
+    }
+
+    function resetAllData() {
+      if (!confirm('Reset all workshop responses across all 3 steps?')) return;
+      state = createFreshState();
+      clearActiveChain();
+      saveState(true);
+      renderCurrentView();
+    }
+
+    // ====================================================
+    // MODALS & QR CODE
+    // ====================================================
+    function openModal(id) {
+      if (id === 'qrModal') updateQr();
+      if (id === 'setupModal') document.getElementById('cfgFirebaseUrl').value = firebaseUrl;
+      document.getElementById(id).classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function updateQr() {
+      const base = window.location.href.split('?')[0];
+      const params = new URLSearchParams();
+      params.set('mode', 'mobile');
+      if (firebaseUrl) params.set('fb', firebaseUrl);
+      const url = `${base}?${params.toString()}`;
+      document.getElementById('mobileUrlDisplay').textContent = url;
+      document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(url)}`;
+    }
+
+    function saveFirebaseConfig() {
+      firebaseUrl = document.getElementById('cfgFirebaseUrl').value.trim().replace(/\/$/, '');
+      localStorage.setItem(CFG_KEY, firebaseUrl);
+      closeModal('setupModal');
+      if (firebaseUrl) startPolling();
+    }
+
+    // ====================================================
+    // CLOUD SYNC (FIREBASE REST + BROADCASTCHANNEL)
+    // ====================================================
+    if (syncChannel) {
+      syncChannel.onmessage = (e) => {
+        if (e.data.type === 'STATE_SYNC') {
+          state = e.data.payload;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          renderCurrentView();
+        }
+      };
+    }
+
+    async function pushToFirebase() {
+      if (!firebaseUrl) return;
+      try {
+        await fetch(`${firebaseUrl}/pch_ogsm_2027_v5.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+      } catch (err) { console.warn('Firebase push err:', err); }
+    }
+
+    let pollTimer = null;
+    function startPolling() {
+      if (pollTimer) clearInterval(pollTimer);
+      if (!firebaseUrl) return;
+      document.getElementById('syncStatusText').textContent = 'Cloud Live Sync';
+      pollTimer = setInterval(async () => {
+        try {
+          const res = await fetch(`${firebaseUrl}/pch_ogsm_2027_v5.json`);
+          if (res.ok) {
+            const remote = await res.json();
+            if (remote && JSON.stringify(remote) !== JSON.stringify(state)) {
+              state = remote;
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+              renderCurrentView();
+            }
+          }
+        } catch (err) {}
+      }, 2000);
+    }
+
+    // INIT
+    (function init() {
+      const params = new URLSearchParams(window.location.search);
+      const fb = params.get('fb');
+      if (fb) {
+        firebaseUrl = fb.trim().replace(/\/$/, '');
+        localStorage.setItem(CFG_KEY, firebaseUrl);
+      }
+      if (params.get('mode') === 'mobile') {
+        document.body.classList.add('mobile-mode-active');
+        setMobileStep(0);
+      } else {
+        renderCurrentView();
+      }
+      if (firebaseUrl) startPolling();
+    })();
+  </script>
+</body>
+</html>
