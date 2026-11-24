@@ -31,8 +31,8 @@
       --cons-border: rgba(255, 75, 100, 0.45);
 
       --gold-color: #ffdc00;
-      --gold-bg: rgba(255, 220, 0, 0.09);
-      --gold-border: rgba(255, 220, 0, 0.45);
+      --gold-bg: rgba(255, 220, 0, 0.08);
+      --gold-border: rgba(255, 220, 0, 0.48);
 
       --header-height: 64px;
     }
@@ -191,9 +191,10 @@
     }
     .step-title {
       font-family: var(--font-display);
-      font-size: 1.35rem;
+      font-size: 1.28rem;
       font-weight: 900;
       color: #fff;
+      line-height: 1.25;
     }
 
     /* SUB-TABS (STEP 1 PILLARS) */
@@ -225,8 +226,8 @@
     .step-view { flex: 1; display: none; min-height: 0; }
     .step-view.active { display: flex; flex-direction: column; gap: 10px; }
 
+    .split-1 { flex: 1; display: grid; grid-template-columns: 1fr; gap: 16px; min-height: 0; }
     .split-2 { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 0; }
-    .split-3 { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; min-height: 0; }
     .summary-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr 1.15fr; gap: 12px; min-height: 0; }
 
     .panel-card {
@@ -244,11 +245,11 @@
 
     .panel-header {
       font-family: var(--font-display);
-      padding: 10px 16px;
+      padding: 11px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       font-weight: 900;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -260,13 +261,13 @@
 
     .panel-body {
       flex: 1;
-      padding: 14px;
+      padding: 18px;
       display: flex;
       flex-wrap: wrap;
       align-content: center;
       justify-content: center;
       align-items: center;
-      gap: 10px 14px;
+      gap: 12px 16px;
       overflow-y: auto;
     }
 
@@ -275,11 +276,11 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 7px 16px;
       border-radius: 999px;
       font-weight: 800;
       line-height: 1.15;
-      background: rgba(6, 7, 56, 0.85);
+      background: rgba(6, 7, 56, 0.88);
       border: 1.5px solid;
       cursor: pointer;
       user-select: none;
@@ -293,7 +294,7 @@
       font-family: var(--font-sans);
       font-size: 0.6em;
       font-weight: 800;
-      background: rgba(0, 0, 50, 0.6);
+      background: rgba(0, 0, 50, 0.65);
       padding: 2px 6px;
       border-radius: 999px;
     }
@@ -481,7 +482,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 4px 8px;
+      padding: 5px 8px;
       border-radius: 6px;
       background: rgba(13, 16, 90, 0.8);
       border: 1px solid rgba(37, 43, 148, 0.6);
@@ -709,37 +710,37 @@
        ========================================== -->
   <main class="main-viewport">
 
-    <!-- STAGE 1: REFLECT (5 PILLARS: WHY WE WON VS WHY WE MISSED) -->
+    <!-- STAGE 1: REFLECT (5 PILLARS: STRATEGY, EXECUTION, CAPABILITY, RESOURCE, CULTURE) -->
     <section class="step-view active" id="viewStage0">
       <div class="header-banner">
         <div>
           <span class="step-tag">STEP 1 OF 3 • REFLECT ON LAST YEAR (PAST → LEARNINGS)</span>
           <h2 class="step-title">Why did we win? Why did we miss?</h2>
           <div class="pillar-subtabs">
-            <button type="button" class="pillar-tab-btn active" id="pTab0" onclick="selectPillar(0)">1. People</button>
-            <button type="button" class="pillar-tab-btn" id="pTab1" onclick="selectPillar(1)">2. Standards & Systems</button>
-            <button type="button" class="pillar-tab-btn" id="pTab2" onclick="selectPillar(2)">3. Equipment</button>
-            <button type="button" class="pillar-tab-btn" id="pTab3" onclick="selectPillar(3)">4. Resources</button>
-            <button type="button" class="pillar-tab-btn" id="pTab4" onclick="selectPillar(4)">5. Behaviors</button>
+            <button type="button" class="pillar-tab-btn active" id="pTab0" onclick="selectPillar(0)">1. Strategy</button>
+            <button type="button" class="pillar-tab-btn" id="pTab1" onclick="selectPillar(1)">2. Execution</button>
+            <button type="button" class="pillar-tab-btn" id="pTab2" onclick="selectPillar(2)">3. Capability</button>
+            <button type="button" class="pillar-tab-btn" id="pTab3" onclick="selectPillar(3)">4. Resource</button>
+            <button type="button" class="pillar-tab-btn" id="pTab4" onclick="selectPillar(4)">5. Culture</button>
           </div>
         </div>
         <div style="text-align:right;">
           <span style="font-size:0.8rem; color:var(--text-muted); font-weight:800;">ACTIVE PILLAR</span>
-          <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:900; color:var(--mars-gold);" id="activePillarLabel">1. People</div>
+          <div style="font-family:var(--font-display); font-size:1.15rem; font-weight:900; color:var(--mars-gold);" id="activePillarLabel">1. Strategy</div>
         </div>
       </div>
 
       <div class="split-2">
         <div class="panel-card pros-theme">
           <div class="panel-header">
-            <span>🏆 WHY WE WON — <span class="pillar-name-hdr">PEOPLE</span></span>
+            <span>🏆 WHY WE WON — <span class="pillar-name-hdr">STRATEGY</span></span>
             <span id="pWonCount">0 entries</span>
           </div>
           <div class="panel-body" id="cloudPillarWon"></div>
         </div>
         <div class="panel-card cons-theme">
           <div class="panel-header">
-            <span>🎯 WHY WE MISSED — <span class="pillar-name-hdr">PEOPLE</span></span>
+            <span>🎯 WHY WE MISSED — <span class="pillar-name-hdr">STRATEGY</span></span>
             <span id="pMissedCount">0 entries</span>
           </div>
           <div class="panel-body" id="cloudPillarMissed"></div>
@@ -777,39 +778,25 @@
       </div>
     </section>
 
-    <!-- STAGE 3: COMMITMENT (START / STOP / CONTINUE) -->
+    <!-- STAGE 3: COMMITMENT (1-COLUMN DISPLAY: NEW STANDARD OR ROUTINE) -->
     <section class="step-view" id="viewStage2">
       <div class="header-banner">
         <div>
           <span class="step-tag">STEP 3 OF 3 • TRANSLATE INTO COMMITMENT (OWNERSHIP)</span>
-          <h2 class="step-title">What must line managers do differently next year?</h2>
+          <h2 class="step-title">What’s your new standard or routine will you establish to help your team deliver better results next year?</h2>
         </div>
-        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700;">
+        <div style="font-size:0.85rem; color:var(--text-muted); font-weight:700; white-space:nowrap;">
           Feeds into Commitment Column
         </div>
       </div>
 
-      <div class="split-3">
-        <div class="panel-card pros-theme">
-          <div class="panel-header">
-            <span>🟢 START DOING</span>
-            <span id="pStartCount">0 entries</span>
-          </div>
-          <div class="panel-body" id="cloudStageStart"></div>
-        </div>
-        <div class="panel-card cons-theme">
-          <div class="panel-header">
-            <span>🔴 STOP DOING</span>
-            <span id="pStopCount">0 entries</span>
-          </div>
-          <div class="panel-body" id="cloudStageStop"></div>
-        </div>
+      <div class="split-1">
         <div class="panel-card gold-theme">
           <div class="panel-header">
-            <span>🟡 CONTINUE DOING</span>
-            <span id="pContinueCount">0 entries</span>
+            <span>🤝 NEW STANDARDS & ROUTINES FOR NEXT YEAR</span>
+            <span id="pRoutineCount">0 entries</span>
           </div>
-          <div class="panel-body" id="cloudStageContinue"></div>
+          <div class="panel-body" id="cloudStageRoutine"></div>
         </div>
       </div>
     </section>
@@ -822,8 +809,8 @@
           <div class="ribbon-title-badge">
             <span>🔗 CURATE & CHAIN STORYLINE:</span>
             <select id="chainPresetSelect" onchange="loadPresetChain(this.value)" style="background:#05062e; color:var(--mars-gold); border:1px solid var(--mars-border); border-radius:5px; padding:3px 8px; font-weight:800; font-size:0.75rem;">
-              <option value="preset_rel">Storyline A: Asset Reliability & Downtime</option>
-              <option value="preset_peo">Storyline B: People, Shift Handover & Escalation</option>
+              <option value="preset_exec">Storyline A: Execution & Line Reliability</option>
+              <option value="preset_cap">Storyline B: Capability, Culture & Handover</option>
               <option value="custom">Custom Live Chain</option>
             </select>
           </div>
@@ -841,11 +828,11 @@
         <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
           <span style="font-size:0.74rem; color:var(--text-muted); font-weight:800;">FILTER PILLAR:</span>
           <button type="button" class="pillar-tab-btn active" id="sumFilterAll" onclick="setSummaryFilter('all')">All</button>
-          <button type="button" class="pillar-tab-btn" id="sumFilter0" onclick="setSummaryFilter(0)">People</button>
-          <button type="button" class="pillar-tab-btn" id="sumFilter1" onclick="setSummaryFilter(1)">Standards</button>
-          <button type="button" class="pillar-tab-btn" id="sumFilter2" onclick="setSummaryFilter(2)">Equip</button>
-          <button type="button" class="pillar-tab-btn" id="sumFilter3" onclick="setSummaryFilter(3)">Resources</button>
-          <button type="button" class="pillar-tab-btn" id="sumFilter4" onclick="setSummaryFilter(4)">Behaviors</button>
+          <button type="button" class="pillar-tab-btn" id="sumFilter0" onclick="setSummaryFilter(0)">Strategy</button>
+          <button type="button" class="pillar-tab-btn" id="sumFilter1" onclick="setSummaryFilter(1)">Execution</button>
+          <button type="button" class="pillar-tab-btn" id="sumFilter2" onclick="setSummaryFilter(2)">Capability</button>
+          <button type="button" class="pillar-tab-btn" id="sumFilter3" onclick="setSummaryFilter(3)">Resource</button>
+          <button type="button" class="pillar-tab-btn" id="sumFilter4" onclick="setSummaryFilter(4)">Culture</button>
         </div>
         <div style="font-size:0.74rem; color:var(--text-muted);">
           Total Submissions: <strong style="color:#fff;" id="sumGrandTotal">0</strong>
@@ -889,24 +876,16 @@
           </div>
         </div>
 
-        <!-- 4. COMMITMENT -->
+        <!-- 4. COMMITMENT (SINGLE UNIFIED STANDARDS & ROUTINES LIST) -->
         <div class="summary-column">
           <div class="summary-col-header commitment">
             <span>4. COMMITMENT (Ownership)</span>
             <span id="sumCommitCount">0</span>
           </div>
           <div class="summary-content-stack">
-            <div class="summary-sub-card">
-              <div class="summary-sub-title" style="color:var(--pros-color);">🟢 START</div>
-              <div class="ranked-list" id="sumListStart"></div>
-            </div>
-            <div class="summary-sub-card">
-              <div class="summary-sub-title" style="color:var(--cons-color);">🔴 STOP</div>
-              <div class="ranked-list" id="sumListStop"></div>
-            </div>
-            <div class="summary-sub-card">
-              <div class="summary-sub-title" style="color:var(--gold-color);">🟡 CONTINUE</div>
-              <div class="ranked-list" id="sumListContinue"></div>
+            <div class="summary-sub-card" style="flex:1;">
+              <div class="summary-sub-title" style="color:var(--mars-gold);">🤝 NEW STANDARDS & ROUTINES</div>
+              <div class="ranked-list" id="sumListRoutines"></div>
             </div>
           </div>
         </div>
@@ -924,7 +903,7 @@
       <p style="font-size:0.8rem; color:var(--text-muted);">Past → Learnings → Future → Commitment</p>
     </div>
 
-    <!-- Non-blocking Toast Banner (Replaces alert() so mobile browsers never block page 2+) -->
+    <!-- Non-blocking Toast Banner -->
     <div id="mobileToastBanner" class="mobile-toast"></div>
 
     <!-- Mobile 3-Step Switcher -->
@@ -936,37 +915,37 @@
 
     <!-- Mobile Step 1 Sub-Pillar Pills (Visible in Step 1) -->
     <div class="m-pillar-pills" id="mPillarPillsBar">
-      <button type="button" class="m-pillar-btn active" id="mPillarBtn0" onclick="selectMobilePillar(0)">1. People</button>
-      <button type="button" class="m-pillar-btn" id="mPillarBtn1" onclick="selectMobilePillar(1)">2. Standards</button>
-      <button type="button" class="m-pillar-btn" id="mPillarBtn2" onclick="selectMobilePillar(2)">3.Equip</button>
+      <button type="button" class="m-pillar-btn active" id="mPillarBtn0" onclick="selectMobilePillar(0)">1. Strategy</button>
+      <button type="button" class="m-pillar-btn" id="mPillarBtn1" onclick="selectMobilePillar(1)">2. Execution</button>
+      <button type="button" class="m-pillar-btn" id="mPillarBtn2" onclick="selectMobilePillar(2)">3. Capability</button>
       <button type="button" class="m-pillar-btn" id="mPillarBtn3" onclick="selectMobilePillar(3)">4. Resource</button>
-      <button type="button" class="m-pillar-btn" id="mPillarBtn4" onclick="selectMobilePillar(4)">5. Behavior</button>
+      <button type="button" class="m-pillar-btn" id="mPillarBtn4" onclick="selectMobilePillar(4)">5. Culture</button>
     </div>
 
     <!-- Mobile Step 1 Form (Works across all 5 Pillars) -->
     <div class="m-card" id="mCardStep0">
       <div style="font-family:var(--font-display); font-size:0.74rem; font-weight:800; color:var(--mars-gold); margin-bottom:3px;" id="mStep1Badge">
-        STEP 1 OF 3 • PILLAR 1 OF 5: PEOPLE
+        STEP 1 OF 3 • PILLAR 1 OF 5: STRATEGY
       </div>
       <div style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; margin-bottom:12px; color:#fff;" id="mStep1Headline">
-        Why did we win? Why did we miss? (People)
+        Why did we win? Why did we miss? (Strategy)
       </div>
 
       <div class="input-box-group" style="border-color:var(--pros-border);">
-        <label style="color:var(--pros-color);" id="mStep1WonLabel">🏆 Why did we win? — People (Up to 3)</label>
-        <input type="text" id="mWon1" placeholder="Win 1 (e.g., Strong Teamwork)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mWon2" placeholder="Win 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mWon3" placeholder="Win 3 (optional)" maxlength="50" autocomplete="off" />
+        <label style="color:var(--pros-color);" id="mStep1WonLabel">🏆 Why did we win? — Strategy (Up to 3)</label>
+        <input type="text" id="mWon1" placeholder="Win 1 (e.g., Clear KPI Focus)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mWon2" placeholder="Win 2 (optional)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mWon3" placeholder="Win 3 (optional)" maxlength="60" autocomplete="off" />
       </div>
 
       <div class="input-box-group" style="border-color:var(--cons-border);">
-        <label style="color:var(--cons-color);" id="mStep1MissLabel">🎯 Why did we miss? — People (Up to 3)</label>
-        <input type="text" id="mMiss1" placeholder="Miss 1 (e.g., Shift Handover Gap)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mMiss2" placeholder="Miss 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mMiss3" placeholder="Miss 3 (optional)" maxlength="50" autocomplete="off" />
+        <label style="color:var(--cons-color);" id="mStep1MissLabel">🎯 Why did we miss? — Strategy (Up to 3)</label>
+        <input type="text" id="mMiss1" placeholder="Miss 1 (e.g., Too Many Priorities)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mMiss2" placeholder="Miss 2 (optional)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mMiss3" placeholder="Miss 3 (optional)" maxlength="60" autocomplete="off" />
       </div>
 
-      <button type="button" class="submit-btn" id="btnSubmitStep1" onclick="submitMobileStep1()">🚀 Submit People & Next Pillar</button>
+      <button type="button" class="submit-btn" id="btnSubmitStep1" onclick="submitMobileStep1()">🚀 Submit Strategy & Go to Execution</button>
     </div>
 
     <!-- Mobile Step 2 Form (Risks & Enablers) -->
@@ -980,52 +959,38 @@
 
       <div class="input-box-group" style="border-color:var(--cons-border);">
         <label style="color:var(--cons-color);">⚠️ Risks / Challenges (Up to 3)</label>
-        <input type="text" id="mRisk1" placeholder="Risk 1 (e.g., Line Downtime)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mRisk2" placeholder="Risk 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mRisk3" placeholder="Risk 3 (optional)" maxlength="50" autocomplete="off" />
+        <input type="text" id="mRisk1" placeholder="Risk 1 (e.g., Line Downtime)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mRisk2" placeholder="Risk 2 (optional)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mRisk3" placeholder="Risk 3 (optional)" maxlength="60" autocomplete="off" />
       </div>
 
       <div class="input-box-group" style="border-color:var(--pros-border);">
         <label style="color:var(--pros-color);">🚀 Enablers / Opportunities (Up to 3)</label>
-        <input type="text" id="mEnabler1" placeholder="Enabler 1 (e.g., Digital Tier Board)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mEnabler2" placeholder="Enabler 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mEnabler3" placeholder="Enabler 3 (optional)" maxlength="50" autocomplete="off" />
+        <input type="text" id="mEnabler1" placeholder="Enabler 1 (e.g., Digital Tier Board)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mEnabler2" placeholder="Enabler 2 (optional)" maxlength="60" autocomplete="off" />
+        <input type="text" id="mEnabler3" placeholder="Enabler 3 (optional)" maxlength="60" autocomplete="off" />
       </div>
 
       <button type="button" class="submit-btn" id="btnSubmitStep2" onclick="submitMobileStep2()">🚀 Submit Priorities & Go to Step 3</button>
     </div>
 
-    <!-- Mobile Step 3 Form (Start / Stop / Continue) -->
+    <!-- Mobile Step 3 Form (1 Unified Question: New Standard or Routine) -->
     <div class="m-card" id="mCardStep2" style="display:none;">
-      <div style="font-family:var(--font-display); font-size:0.74rem; font-weight:800; color:var(--mars-gold); margin-bottom:3px;">
-        STEP 3 OF 3 • TRANSLATE INTO COMMITMENT
+      <div style="font-family:var(--font-display); font-size:0.74rem; font-weight:800; color:var(--mars-gold); margin-bottom:4px;">
+        STEP 3 OF 3 • TRANSLATE INTO COMMITMENT (OWNERSHIP)
       </div>
-      <div style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; margin-bottom:12px; color:#fff;">
-        What must line managers do differently next year?
-      </div>
-
-      <div class="input-box-group" style="border-color:var(--pros-border);">
-        <label style="color:var(--pros-color);">🟢 START DOING (Up to 3)</label>
-        <input type="text" id="mStart1" placeholder="Start 1 (e.g., Daily Gemba Coaching)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mStart2" placeholder="Start 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mStart3" placeholder="Start 3 (optional)" maxlength="50" autocomplete="off" />
-      </div>
-
-      <div class="input-box-group" style="border-color:var(--cons-border);">
-        <label style="color:var(--cons-color);">🔴 STOP DOING (Up to 3)</label>
-        <input type="text" id="mStop1" placeholder="Stop 1 (e.g., Firefighting Alone)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mStop2" placeholder="Stop 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mStop3" placeholder="Stop 3 (optional)" maxlength="50" autocomplete="off" />
+      <div style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; margin-bottom:14px; color:#fff; line-height:1.35;">
+        What’s your new standard or routine will you establish to help your team deliver better results next year?
       </div>
 
       <div class="input-box-group" style="border-color:var(--gold-border);">
-        <label style="color:var(--gold-color);">🟡 CONTINUE DOING (Up to 3)</label>
-        <input type="text" id="mContinue1" placeholder="Continue 1 (e.g., Safety Huddles)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mContinue2" placeholder="Continue 2 (optional)" maxlength="50" autocomplete="off" />
-        <input type="text" id="mContinue3" placeholder="Continue 3 (optional)" maxlength="50" autocomplete="off" />
+        <label style="color:var(--mars-gold);">🤝 YOUR NEW STANDARD OR ROUTINE (Up to 3)</label>
+        <input type="text" id="mRoutine1" placeholder="Standard / Routine 1 (e.g., Daily 15-Min Gemba Walk)" maxlength="65" autocomplete="off" />
+        <input type="text" id="mRoutine2" placeholder="Standard / Routine 2 (optional)" maxlength="65" autocomplete="off" />
+        <input type="text" id="mRoutine3" placeholder="Standard / Routine 3 (optional)" maxlength="65" autocomplete="off" />
       </div>
 
-      <button type="button" class="submit-btn" id="btnSubmitStep3" onclick="submitMobileStep3()">🎉 Submit Commitments</button>
+      <button type="button" class="submit-btn" id="btnSubmitStep3" onclick="submitMobileStep3()">🎉 Submit Commitment</button>
     </div>
 
     <div style="text-align:center; margin-top:16px;">
@@ -1070,29 +1035,29 @@
     // ====================================================
     // 1. DATA STRUCTURE & IRONCLAD NORMALIZER
     // ====================================================
-    const STORAGE_KEY = 'pch_ogsm_2027_v6_data';
-    const CFG_KEY = 'pch_ogsm_2027_v6_cfg';
-    const FIREBASE_NODE = 'pch_ogsm_2027_v6';
+    const STORAGE_KEY = 'pch_ogsm_2027_v7_data';
+    const CFG_KEY = 'pch_ogsm_2027_v7_cfg';
+    const FIREBASE_NODE = 'pch_ogsm_2027_v7';
 
     const PILLARS = [
-      'People',
-      'Standards & Systems',
-      'Equipment',
-      'Resources',
-      'Behaviors'
+      'Strategy',
+      'Execution',
+      'Capability',
+      'Resource',
+      'Culture'
     ];
 
-    const PILLAR_SHORT = ['People', 'Standards', 'Equip', 'Resource', 'Behavior'];
+    const PILLAR_SHORT = ['Strategy', 'Execution', 'Capability', 'Resource', 'Culture'];
 
     const PALETTE_WON = ['#00d7b9', '#2ee59d', '#00c8ff', '#70f5d9', '#5ce1e6'];
     const PALETTE_MISSED = ['#ff4b64', '#ff7832', '#ffdc00', '#ff8597', '#ffa600'];
-    const PALETTE_GOLD = ['#ffdc00', '#ffd000', '#ffe853', '#00c8ff'];
+    const PALETTE_COMMIT = ['#ffdc00', '#00d7b9', '#00c8ff', '#ffe853', '#2ee59d', '#ffae00'];
 
     function createFreshState() {
       return {
         step1: Array.from({ length: 5 }, () => ({ won: {}, missed: {} })),
         step2: { risks: {}, enablers: {} },
-        step3: { start: {}, stop: {}, continue: {} }
+        step3: { routines: {} }
       };
     }
 
@@ -1133,13 +1098,11 @@
       }
 
       if (raw.step3 && typeof raw.step3 === 'object') {
-        ['start', 'stop', 'continue'].forEach(bucket => {
-          if (raw.step3[bucket] && typeof raw.step3[bucket] === 'object') {
-            Object.entries(raw.step3[bucket]).forEach(([k, v]) => {
-              if (typeof v === 'number' && v > 0) clean.step3[bucket][k] = v;
-            });
-          }
-        });
+        if (raw.step3.routines && typeof raw.step3.routines === 'object') {
+          Object.entries(raw.step3.routines).forEach(([k, v]) => {
+            if (typeof v === 'number' && v > 0) clean.step3.routines[k] = v;
+          });
+        }
       }
 
       return clean;
@@ -1162,18 +1125,18 @@
 
     // Active Curate & Chain State (4 slots)
     let activeChain = {
-      past: { word: 'PM Execution Discipline', pillar: 'Equip', count: 6 },
-      miss: { word: 'Late Escalation on Stops', pillar: 'Behav', count: 7, impact: 'OEE DRAG', sev: 'CRITICAL' },
+      past: { word: 'PM Execution Discipline', pillar: 'Execution', count: 6 },
+      miss: { word: 'Late Escalation on Stops', pillar: 'Culture', count: 7, impact: 'OEE DRAG', sev: 'CRITICAL' },
       future: { word: 'Line Downtime Risk', pillar: 'Risk', count: 8, impact: 'COST LEAK', sev: 'HIGH' },
-      commit: { word: 'Daily Gemba Coaching', pillar: 'Start', count: 6 }
+      commit: { word: 'Daily 15-Min Gemba Walk', pillar: 'Routine', count: 7 }
     };
 
-    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('pch_ogsm_2027_ch_v6') : null;
+    const syncChannel = ('BroadcastChannel' in window) ? new BroadcastChannel('pch_ogsm_2027_ch_v7') : null;
 
     function loadSavedFirebaseUrl() {
-      // Check current or earlier localStorage keys so user doesn't lose Firebase URL
       return (
         localStorage.getItem(CFG_KEY) ||
+        localStorage.getItem('pch_ogsm_2027_v6_cfg') ||
         localStorage.getItem('pch_ogsm_2027_v5_cfg') ||
         localStorage.getItem('pch_ogsm_2027_v4_cfg') ||
         ''
@@ -1182,7 +1145,7 @@
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('pch_ogsm_2027_v5_data');
+        const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return createFreshState();
         return normalizeState(JSON.parse(raw));
       } catch (e) {
@@ -1235,10 +1198,10 @@
     }
 
     function computeSize(count, max) {
-      const base = 1.05;
-      const step = Math.min(2.2, (count - 1) * 0.48);
+      const base = 1.08;
+      const step = Math.min(2.25, (count - 1) * 0.48);
       const spread = max > 1 ? ((count - 1) / (max - 1)) * 0.5 : 0;
-      return Math.min(3.6, base + step + spread);
+      return Math.min(3.75, base + step + spread);
     }
 
     function renderBag(containerId, bag, palette, emptyMsg) {
@@ -1250,7 +1213,7 @@
       renderedBagHashes[containerId] = hash;
 
       if (entries.length === 0) {
-        container.innerHTML = `<span style="font-size:0.9rem; color:rgba(184,192,245,0.5); font-style:italic;">${emptyMsg}</span>`;
+        container.innerHTML = `<span style="font-size:0.95rem; color:rgba(184,192,245,0.5); font-style:italic;">${emptyMsg}</span>`;
         return;
       }
       const max = Math.max(...entries.map(e => e[1]), 1);
@@ -1289,14 +1252,11 @@
     }
 
     function renderStage2() {
-      const s = state.step3 || { start: {}, stop: {}, continue: {} };
-      document.getElementById('pStartCount').textContent = `${Object.values(s.start || {}).reduce((a, b) => a + b, 0)} entries`;
-      document.getElementById('pStopCount').textContent = `${Object.values(s.stop || {}).reduce((a, b) => a + b, 0)} entries`;
-      document.getElementById('pContinueCount').textContent = `${Object.values(s.continue || {}).reduce((a, b) => a + b, 0)} entries`;
+      const routines = (state.step3 && state.step3.routines) ? state.step3.routines : {};
+      const routineTotal = Object.values(routines).reduce((a, b) => a + b, 0);
+      document.getElementById('pRoutineCount').textContent = `${routineTotal} entries`;
 
-      renderBag('cloudStageStart', s.start, PALETTE_WON, 'No start behaviors yet');
-      renderBag('cloudStageStop', s.stop, PALETTE_MISSED, 'No stop behaviors yet');
-      renderBag('cloudStageContinue', s.continue, PALETTE_GOLD, 'No continue behaviors yet');
+      renderBag('cloudStageRoutine', routines, PALETTE_COMMIT, 'No new standards or routines submitted yet');
     }
 
     // ====================================================
@@ -1316,7 +1276,7 @@
       let cls = 'impact-oee';
       if (lower.includes('cost') || lower.includes('overtime') || lower.includes('budget') || lower.includes('scrap') || lower.includes('waste')) {
         type = 'COST LEAK'; cls = 'impact-cost';
-      } else if (lower.includes('turnover') || lower.includes('skill') || lower.includes('onboard') || lower.includes('morale')) {
+      } else if (lower.includes('turnover') || lower.includes('skill') || lower.includes('onboard') || lower.includes('morale') || lower.includes('capability')) {
         type = 'CAPABILITY DRAIN'; cls = 'impact-capability';
       }
       const isCritical = count >= 5;
@@ -1376,18 +1336,15 @@
       document.getElementById('sumWonCount').textContent = totalWon;
       document.getElementById('sumMissedCount').textContent = totalMissed;
 
-      renderRankedBox('sumListEnablers', state.step2.enablers, '🚀', 'future');
-      renderRankedBox('sumListRisks', state.step2.risks, '⚠️', 'future', true);
+      renderRankedBox('sumListEnablers', state.step2.enablers, '🚀', 'future', false, 5);
+      renderRankedBox('sumListRisks', state.step2.risks, '⚠️', 'future', true, 5);
       const enabCount = Object.values(state.step2.enablers || {}).reduce((a, b) => a + b, 0);
       const riskCount = Object.values(state.step2.risks || {}).reduce((a, b) => a + b, 0);
       document.getElementById('sumFutureCount').textContent = enabCount + riskCount;
 
-      renderRankedBox('sumListStart', state.step3.start, '🟢', 'commit');
-      renderRankedBox('sumListStop', state.step3.stop, '🔴', 'commit');
-      renderRankedBox('sumListContinue', state.step3.continue, '🟡', 'commit');
-      const comCount = Object.values(state.step3.start || {}).reduce((a, b) => a + b, 0) +
-                       Object.values(state.step3.stop || {}).reduce((a, b) => a + b, 0) +
-                       Object.values(state.step3.continue || {}).reduce((a, b) => a + b, 0);
+      const routinesBag = (state.step3 && state.step3.routines) ? state.step3.routines : {};
+      renderRankedBox('sumListRoutines', routinesBag, '🤝', 'commit', false, 12);
+      const comCount = Object.values(routinesBag).reduce((a, b) => a + b, 0);
       document.getElementById('sumCommitCount').textContent = comCount;
       document.getElementById('sumGrandTotal').textContent = totalWon + totalMissed + enabCount + riskCount + comCount;
     }
@@ -1418,9 +1375,9 @@
       ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Risk/Enabler below</div>`;
 
       const cSlot = activeChain.commit ? `
-        <div class="slot-meta" style="color:var(--mars-gold);"><span>4. LINE COMMITMENT</span> <span>🟢 COUNTERMEASURE</span></div>
+        <div class="slot-meta" style="color:var(--mars-gold);"><span>4. NEW STANDARD / ROUTINE</span> <span>🤝 OWNERSHIP</span></div>
         <div class="slot-text">${escapeHtml(activeChain.commit.word)}</div>
-      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Commitment below</div>`;
+      ` : `<div style="font-size:0.75rem; color:rgba(255,255,255,0.4); text-align:center;">Click a Standard/Routine below</div>`;
 
       track.innerHTML = `
         <div class="chain-card-slot slot-past">${pSlot}</div>
@@ -1459,19 +1416,19 @@
     }
 
     function loadPresetChain(presetKey) {
-      if (presetKey === 'preset_rel') {
+      if (presetKey === 'preset_exec') {
         activeChain = {
-          past: { word: 'PM Execution Discipline', pillar: 'Equip', count: 6 },
-          miss: { word: 'Late Escalation on Stops', pillar: 'Behav', count: 7, impact: 'OEE DRAG' },
+          past: { word: 'PM Execution Discipline', pillar: 'Execution', count: 6 },
+          miss: { word: 'Late Escalation on Stops', pillar: 'Culture', count: 7, impact: 'OEE DRAG' },
           future: { word: 'Line Downtime Risk', pillar: 'Risk', count: 8, impact: 'COST LEAK' },
-          commit: { word: 'Daily Gemba Coaching', pillar: 'Start', count: 6 }
+          commit: { word: 'Daily 15-Min Gemba Walk', pillar: 'Routine', count: 7 }
         };
-      } else if (presetKey === 'preset_peo') {
+      } else if (presetKey === 'preset_cap') {
         activeChain = {
-          past: { word: 'Strong Team Alignment', pillar: 'People', count: 5 },
-          miss: { word: 'Shift Handover Gap', pillar: 'People', count: 6, impact: 'CAPABILITY DRAIN' },
-          future: { word: 'High Turnover Risk', pillar: 'Risk', count: 5, impact: 'CAPABILITY DRAIN' },
-          commit: { word: 'Shift Handover Discipline', pillar: 'Continue', count: 5 }
+          past: { word: 'Cross-Skill Matrix', pillar: 'Capability', count: 5 },
+          miss: { word: 'Shift Handover Gap', pillar: 'Execution', count: 6, impact: 'CAPABILITY DRAIN' },
+          future: { word: 'High Turnover Rate', pillar: 'Risk', count: 5, impact: 'CAPABILITY DRAIN' },
+          commit: { word: 'Standard Line-Side Shift Handover', pillar: 'Routine', count: 6 }
         };
       } else {
         clearActiveChain();
@@ -1487,7 +1444,7 @@
       div.innerHTML = `
         <span style="display:flex; align-items:center; gap:4px; max-width:76%; overflow:hidden;">
           <span style="font-size:0.75rem; color:${inChain ? 'var(--mars-gold)' : 'rgba(255,255,255,0.4)'};">${inChain ? '🔘' : '○'}</span>
-          ${badge ? `<span class="pillar-badge">${badge.slice(0, 4)}</span>` : ''}
+          ${badge ? `<span class="pillar-badge">${badge.slice(0, 5)}</span>` : ''}
           <strong style="color:#fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${escapeHtml(word)}</strong>
         </span>
         <span style="display:flex; align-items:center; gap:4px;">
@@ -1499,7 +1456,7 @@
       return div;
     }
 
-    function renderRankedBox(containerId, bag, icon, slotKey, isNegative = false) {
+    function renderRankedBox(containerId, bag, icon, slotKey, isNegative = false, limit = 5) {
       const c = document.getElementById(containerId);
       if (!c) return;
       c.innerHTML = '';
@@ -1508,7 +1465,7 @@
         c.innerHTML = '<span style="font-size:0.72rem; color:var(--text-muted); font-style:italic;">None yet</span>';
         return;
       }
-      entries.slice(0, 5).forEach(([w, count]) => {
+      entries.slice(0, limit).forEach(([w, count]) => {
         const inChain = activeChain[slotKey] && activeChain[slotKey].word.toLowerCase() === w.toLowerCase();
         const impact = isNegative ? detectNegativeImpact(w, count) : null;
         const item = createRankedItem(`${icon} ${w}`, count, null, inChain, () => selectChainSlot(slotKey, w, slotKey, count), impact);
@@ -1520,7 +1477,6 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // Supports comma/semicolon separated phrases OR single phrases safely
     function addWords(bag, text) {
       if (!bag || typeof bag !== 'object') return false;
       if (!text || !text.trim()) return false;
@@ -1528,7 +1484,7 @@
       if (parts.length === 0) return false;
 
       parts.forEach(part => {
-        const clean = part.slice(0, 50);
+        const clean = part.slice(0, 65);
         const existing = Object.keys(bag).find(k => k.toLowerCase() === clean.toLowerCase());
         const target = existing || clean;
         bag[target] = (bag[target] || 0) + 1;
@@ -1552,7 +1508,6 @@
     }
 
     function refreshMobileTabsUI() {
-      // Update 3-Step Tabs
       const stepLabels = ['1. Reflect', '2. Priorities', '3. Commitment'];
       for (let i = 0; i < 3; i++) {
         const btn = document.getElementById(`mStepBtn${i}`);
@@ -1563,13 +1518,11 @@
         document.getElementById(`mCardStep${i}`).style.display = (i === mobileStep) ? 'block' : 'none';
       }
 
-      // Show/Hide Step 1 Pillar Pills Bar
       const pillarBar = document.getElementById('mPillarPillsBar');
       if (pillarBar) {
         pillarBar.style.display = (mobileStep === 0) ? 'grid' : 'none';
       }
 
-      // Update Step 1 Pillar Pills & Dynamic Labels
       for (let p = 0; p < 5; p++) {
         const pBtn = document.getElementById(`mPillarBtn${p}`);
         if (!pBtn) continue;
@@ -1615,7 +1568,7 @@
       }).filter(Boolean);
     }
 
-    // STEP 1 SUBMIT (ALL 5 PILLARS: PEOPLE -> STANDARDS -> EQUIPMENT -> RESOURCES -> BEHAVIORS)
+    // STEP 1 SUBMIT (ALL 5 PILLARS: STRATEGY -> EXECUTION -> CAPABILITY -> RESOURCE -> CULTURE)
     async function submitMobileStep1() {
       const btn = document.getElementById('btnSubmitStep1');
       const pIdx = mobilePillar;
@@ -1628,7 +1581,6 @@
       }
 
       btn.disabled = true;
-      const origLabel = btn.textContent;
       btn.textContent = '⏳ Saving...';
 
       try {
@@ -1701,15 +1653,13 @@
       }
     }
 
-    // STEP 3 SUBMIT (START / STOP / CONTINUE)
+    // STEP 3 SUBMIT (1 UNIFIED BUCKET: NEW STANDARD OR ROUTINE)
     async function submitMobileStep3() {
       const btn = document.getElementById('btnSubmitStep3');
-      const startVals = readTrimmedValues(['mStart1', 'mStart2', 'mStart3']);
-      const stopVals = readTrimmedValues(['mStop1', 'mStop2', 'mStop3']);
-      const contVals = readTrimmedValues(['mContinue1', 'mContinue2', 'mContinue3']);
+      const routineVals = readTrimmedValues(['mRoutine1', 'mRoutine2', 'mRoutine3']);
 
-      if (startVals.length === 0 && stopVals.length === 0 && contVals.length === 0) {
-        showMobileToast('⚠️ Please enter at least 1 Start, Stop, or Continue commitment.', true);
+      if (routineVals.length === 0) {
+        showMobileToast('⚠️ Please enter at least 1 new standard or routine.', true);
         return;
       }
 
@@ -1722,26 +1672,20 @@
         }
         state = normalizeState(state);
 
-        startVals.forEach(v => addWords(state.step3.start, v));
-        stopVals.forEach(v => addWords(state.step3.stop, v));
-        contVals.forEach(v => addWords(state.step3.continue, v));
+        routineVals.forEach(v => addWords(state.step3.routines, v));
 
         await saveState(true);
         Object.keys(renderedBagHashes).forEach(k => delete renderedBagHashes[k]);
         renderCurrentView();
 
-        clearInputIds([
-          'mStart1', 'mStart2', 'mStart3',
-          'mStop1', 'mStop2', 'mStop3',
-          'mContinue1', 'mContinue2', 'mContinue3'
-        ]);
+        clearInputIds(['mRoutine1', 'mRoutine2', 'mRoutine3']);
         completedSteps.add(2);
         refreshMobileTabsUI();
-        showMobileToast('🎉 Commitments submitted! You can add more or tap any tab above.');
+        showMobileToast('🎉 Commitment submitted! You can add more or tap any tab above.');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } finally {
         btn.disabled = false;
-        btn.textContent = '🎉 Submit Commitments';
+        btn.textContent = '🎉 Submit Commitment';
       }
     }
 
@@ -1765,23 +1709,28 @@
     async function seedWorkshopDemo() {
       state = normalizeState({
         step1: [
-          { won: { 'Strong Team Alignment': 5, 'Engagement': 4, 'Cross-training': 3, 'Ownership': 2 }, missed: { 'Shift Handover Gap': 6, 'Turnover Rate': 4, 'Skill Gap': 2 } },
-          { won: { 'Daily Tier Boards': 6, 'Clear SOPs': 4, '5S Audit': 2 }, missed: { 'SOP Deviation': 5, 'Documentation Gap': 3 } },
-          { won: { 'PM Execution Discipline': 6, 'Line Speed': 3, 'New Sensor': 2 }, missed: { 'Line Downtime': 6, 'Spare Parts Delay': 4, 'Wear & Tear': 2 } },
-          { won: { 'Safety Stock Buffer': 4, 'Inventory Control': 3 }, missed: { 'Overtime Cost Leak': 5, 'Budget Limit': 4, 'Lead Time': 2 } },
-          { won: { 'Safety First Culture': 6, 'Zero Harm': 4, 'Peer Praise': 2 }, missed: { 'Late Escalation on Stops': 7, 'Firefighting Alone': 5, 'Silo Mentality': 3 } }
+          { won: { 'Clear OGSM Focus': 5, 'Portfolio Prioritization': 4, 'Aligned KPIs': 3 }, missed: { 'Too Many Initiatives': 5, 'Mid-Year Scope Shift': 3 } },
+          { won: { 'PM Execution Discipline': 6, 'Daily Tier Boards': 5, '5S Standards': 3 }, missed: { 'Shift Handover Gap': 6, 'SOP Deviation': 5, 'Line Downtime': 4 } },
+          { won: { 'Cross-Skill Matrix': 5, 'Operator Upskilling': 4, 'Tech Onboarding': 3 }, missed: { 'Turnover Rate': 5, 'Troubleshooting Skill Gap': 4 } },
+          { won: { 'Safety Stock Buffer': 4, 'Energy Cost Control': 3 }, missed: { 'Overtime Cost Leak': 5, 'Spare Parts Lead Time': 4 } },
+          { won: { 'Safety First Ownership': 6, 'Peer Recognition': 4, 'Open Escalation': 3 }, missed: { 'Late Escalation on Stops': 7, 'Firefighting Alone': 5, 'Silo Mentality': 3 } }
         ],
         step2: {
-          risks: { 'Line Downtime Risk': 8, 'Raw Material Delay': 6, 'High Turnover Rate': 5, 'Inflation': 3 },
-          enablers: { 'New Automation': 7, 'Digital Tier Board': 6, 'Safety Leadership': 4, 'Autonomous Care': 3 }
+          risks: { 'Line Downtime Risk': 8, 'Raw Material Delay': 6, 'High Turnover Rate': 5, 'Cost Inflation': 3 },
+          enablers: { 'New Automation': 7, 'Digital Tier Board': 6, 'Autonomous Maintenance': 5, 'Safety Leadership': 4 }
         },
         step3: {
-          start: { 'Daily Gemba Coaching': 6, 'Root Cause Follow-up': 5, 'Line-side Feedback': 4 },
-          stop: { 'Firefighting Alone': 5, 'Late Escalation': 4, 'Skipping Handover': 3 },
-          continue: { 'Safety Huddles': 7, 'Shift Handover Discipline': 5, 'Peer Recognition': 4 }
+          routines: {
+            'Daily 15-Min Gemba Walk': 7,
+            'Standard Line-Side Shift Handover': 6,
+            '15-Min Stop Escalation Trigger': 5,
+            'Weekly 5-Why Root Cause Review': 5,
+            'Monthly Operator Skill Coaching': 4,
+            'Pre-Shift Safety & Quality Huddle': 4
+          }
         }
       });
-      loadPresetChain('preset_rel');
+      loadPresetChain('preset_exec');
       Object.keys(renderedBagHashes).forEach(k => delete renderedBagHashes[k]);
       await saveState(true);
       renderCurrentView();
